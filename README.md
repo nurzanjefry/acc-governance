@@ -1,33 +1,83 @@
 # acc-governance (Agent Control Center Governance)
 
-**A reusable, deterministic project management framework for guiding teams through product definition, specification, implementation, domain logic validation, and deployment.**
-
-Not project-specific. Use this as a template for new projects.
+**A fully-agentic, deterministic project management framework for end-to-end product creation, development, and orchestration through 5 phases: Define → Spec → Build → Reconciliation → Test & Ship.**
 
 ---
 
-## How to Use This Framework
+## Role Definition
 
-### For a New Project
+**Project Manager (PM):** Claude Code
+- Execute orchestration protocol, manage agents, synthesize findings, present to Owner
 
-Clone or download `acc-governance`, then:
+**Owner/Executive:** You
+- Define objectives, approve phase advancement, make strategic decisions
+
+**Workers:** 22 AI Agents
+- Execute assigned work, conduct peer review, commit to version control
+
+See `CLAUDE.md` and `.claude/docs/ROLES.md` for formal role definitions and governance structure.
+
+---
+
+## Prerequisites
+
+- **Claude Code** — [claude.ai/code](https://claude.ai/code)
+- **Git** — For version control
+- **Text editor** — For reading/editing project files
+
+---
+
+## Quick Start
+
+**1. Copy the framework:**
+```bash
+git clone <repo-url> my-project
+cd my-project
 ```
-cd acc-governance
-./init.bat
+
+**2. Read CLAUDE.md** (explains PM role + how to set up):
+```bash
+# Open CLAUDE.md — it has full startup instructions
 ```
 
-This pre-populates the project with base structure (5 phases, work-list.json, PROGRESS.md).
+**3. Update project files for your domain:**
+- `GLOSSARY.md` — Add your domain terminology
+- `work-list.json` — Define your deliverables (or let project-init populate it)
+- Phase `CLAUDE.md` files — Customize exit criteria if needed
 
-Then:
+**4. Open in Claude Code:**
+```bash
+claude-code
 ```
-claude-code agent project-init
-```
+I (Claude Code) am your Project Manager. I'll orchestrate the 8-step loop and ask you for approval on business decisions. Follow CLAUDE.md's "Welcome, Project Manager" section.
 
-The project-init agent will:
-1. Prompt for project name, domain, description
-2. Ask for initial glossary terms + definitions
-3. Pre-populate GLOSSARY.md and work-list.json
-4. Offer to start define-author immediately
+---
+
+## How It Works
+
+**Three-layer execution model:**
+
+| Layer | Actor | Function |
+|-------|-------|----------|
+| **Strategic** | Owner | Define objectives, approve phase advancement, authorize decisions |
+| **Operational** | Claude PM | Execute 8-step loop, manage agents, synthesize quality findings |
+| **Execution** | 22 Agents | Write deliverables, conduct peer review, commit output |
+
+**Per work-list item, PM executes:**
+1. Orient — Read work-list.json, PROGRESS.md, phase CLAUDE.md
+2. Pick — Select one not_started item; set in_progress
+3. Choose — Route to appropriate producer agent
+4. Brief — Provide item, exit criteria, context files
+5. Review — Dispatch 15 reviewers in parallel (6 quality dimensions)
+6. Revise — Synthesize findings; brief agent for batch revision (max 5 cycles)
+7. Score & Gate — Present to Owner for approval
+8. Close Out — Mark item passing; update tracking; log to PROGRESS.md
+
+**State lives in git (resumable, auditable):**
+- `work-list.json` — Backlog + item status
+- `PROGRESS.md` — Audit log of every execution
+- `decisions/adr-*.md` — Architectural decisions (why choices were made)
+- `GLOSSARY.md` — Canonical terminology
 
 ---
 
@@ -35,24 +85,25 @@ The project-init agent will:
 
 ```
 acc-governance/
-├── init.bat — Initialize new projects (run from within copied folder)
 ├── 01-define/ — Product definition (prd, user journey, UI/UX, roles)
 ├── 02-spec/ — Technical architecture (stack, data model, API, standards)
 ├── 03-build/ — Implementation (code, database, integration)
 ├── 04-reconciliation/ — Domain logic validation (if needed)
 ├── 05-test-ship/ — Testing & deployment (test plan, tracking, runbooks)
-├── decisions/ — ADR templates and framework governance
+├── decisions/ — ADR templates and architectural decision records
 ├── .claude/ — Agents (22 total), protocols, configurations
 │   ├── agents/ — 5 producers + 15 reviewers + 1 executor + 1 project-init
 │   └── docs/ — Orchestration protocol, rules, guardrails, runbooks
-├── CLAUDE.md — Framework governance rules (not project-specific)
+├── CLAUDE.md — Developer guidance for working with this framework
 ├── GLOSSARY.md — TEMPLATE: define your domain terms here
+├── work-list.json — TEMPLATE: project backlog and deliverables
+├── PROGRESS.md — TEMPLATE: audit log of agent executions
 └── README.md — This file
 ```
 
 ---
 
-## The 21 Agents
+## The 22 Agents
 
 ### Producers (One per Phase)
 - **define-author** — Phase 1 (product definition)
@@ -98,108 +149,54 @@ Run in parallel after each producer finishes.
 7. **Score & gate** — Rubric: 6 dimensions, 0–2 scoring, max 12 points
 8. **Close out** — Mark item passing, log to PROGRESS.md
 
----
-
-## Key Protocols
-
-**Orchestration:** `.claude/docs/orchestration-protocol.md` — Full 8-step PM loop with synchronization strategy
-
-**Revision Cycle:** How producers batch findings and fix once (not per finding)
-
-**Error Recovery:** `.claude/docs/error-recovery-runbook.md` — What to do if a producer/reviewer fails
-
-**Locking:** `.claude/docs/locking-protocol.md` — Prevent concurrent edit conflicts in work-list.json
-
-**Framework Evolution:** `.claude/docs/FRAMEWORK-EVOLUTION.md` — RFC process for improving the framework itself
-
----
-
-## State Management
-
-**All state lives in files (not in memory):**
-
-- `work-list.json` — Backlog of deliverables (status, owner, verification)
-- `PROGRESS.md` — Running log of every agent execution (audit trail)
-- `decisions/adr-*.md` — Recorded architectural decisions (why choices made)
-- `GLOSSARY.md` — Canonical domain terminology (single source of truth)
-
-**Why files?**
-- Human-readable (git shows every change)
-- Session-reset resilient (pull git, resume)
-- Auditable (full history in git)
-- No database dependency
-
----
-
-## Starting a New Project
-
-**Option A: Automated (Recommended)**
-
-Clone or download `acc-governance`, then:
-```
-cd acc-governance
-./init.bat
-```
-
-This pre-populates the project with base structure (5 phases, work-list.json, PROGRESS.md).
-
-Then:
-```
-claude-code agent project-init
-```
-
-The project-init agent will:
-1. Prompt for project name, domain, description
-2. Ask for initial glossary terms + definitions
-3. Pre-populate GLOSSARY.md and work-list.json
-4. Offer to start define-author immediately
-
----
-
-**Option B: Manual**
-
-1. Copy `governance-framework/` to `projects/my-project/`
-2. Read `projects/my-project/CLAUDE.md` (framework rules)
-3. Update `projects/my-project/GLOSSARY.md` with your domain terms
-4. Update `projects/my-project/work-list.json` (customize phases if needed)
-5. Run `define-author` agent on item `def-001`
-6. Follow the orchestration loop (review → revise → pass → next phase)
-
----
-
-## Customization
-
-This framework is generic. Customize for your project:
-
-- **Add domain-specific reviewers** (e.g., ML-reviewer for ML projects, compliance-reviewer for regulated domains)
-- **Adjust phases** (some projects need 6 phases; others are fine with 4)
-- **Adjust templates** (templates in each phase folder are starting points, not requirements)
-- **Adjust exit criteria** (each phase CLAUDE.md lists defaults; override if needed)
+See `.claude/docs/orchestration-protocol.md` for full details.
 
 ---
 
 ## Documentation
 
-**For framework users:**
-- `01-define/CLAUDE.md` — What Phase 1 producers/reviewers do
-- `02-spec/CLAUDE.md` — What Phase 2 producers/reviewers do
-- `.claude/docs/orchestration-protocol.md` — How PM loop works
-- `.claude/agents/README.md` — Agent registry and evaluation matrix
+**Start here:**
+- **CLAUDE.md** — Your PM role + how to start + architecture overview
+- **GLOSSARY.md** — Template for domain terms
 
-**For framework maintainers:**
-- `.claude/docs/FRAMEWORK-EVOLUTION.md` — How to evolve the framework
-- `.claude/docs/rules.md` — Core framework rules and constraints
-- `.claude/docs/guardrails.md` — Actions requiring explicit approval
+**For running projects:**
+- **01-define/CLAUDE.md, 02-spec/CLAUDE.md, etc.** — Phase deliverables + exit criteria + reviewers
+- **.claude/docs/orchestration-protocol.md** — Full 8-step PM loop specification
+- **.claude/agents/README.md** — Agent registry + reviewer matrix
 
----
-
-## Questions?
-
-- How do I add a new phase? → Edit `.claude/docs/orchestration-protocol.md` and add phase CLAUDE.md
-- How do I create a new agent? → Copy an existing agent's format, update `.claude/agents/README.md`
-- How do I customize exit criteria? → Edit the phase CLAUDE.md file
-- How do I track progress? → Log to PROGRESS.md after each review cycle
+**For evolving the framework:**
+- **.claude/docs/FRAMEWORK-EVOLUTION.md** — RFC process for framework changes
+- **.claude/docs/rules.md** — Core constraints
+- **.claude/docs/guardrails.md** — Restricted actions (no force-push, no skipping security, etc.)
 
 ---
 
-**This framework is designed for high-stakes projects (finance, SaaS, compliance).** For simple projects or MVPs, use fewer reviewers or skip phases.
+## Customization
+
+The framework is generic. For your project:
+- **Add domain reviewers** (e.g., ML-reviewer, compliance-reviewer)
+- **Adjust phases** (5 is default; add/remove as needed)
+- **Override exit criteria** (edit phase CLAUDE.md)
+- **Customize templates** (templates in each phase folder are starting points)
+
+See CLAUDE.md § "Development Guidelines" for how.
+
+---
+
+## Common Questions
+
+**Q: How do I start a brand new project?**
+A: Copy acc-governance/ → Open CLAUDE.md → Follow "Welcome, PM" section → It will ask for project name + domain.
+
+**Q: What if I'm already mid-project?**
+A: Read CLAUDE.md, read latest PROGRESS.md entry, read your work-list.json, follow 8-step PM loop starting at "Pick One Item".
+
+**Q: How do I add a new phase?**
+A: Create 0X-name/CLAUDE.md (exit criteria, deliverables, reviewers) + create producer agent + update orchestration-protocol.md.
+
+**Q: My agent found a bug in the framework itself?**
+A: Use governance-framework-improvement/ parallel pipeline to propose + test + ship improvements.
+
+---
+
+**Designed for high-stakes projects (finance, SaaS, compliance) where deterministic, auditable, parallel orchestration matters. For simple projects, use fewer reviewers or skip phases.**
