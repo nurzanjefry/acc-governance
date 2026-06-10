@@ -118,9 +118,10 @@ All state lives in git:
 **Run the 8-step loop per work item:** I pick item → select agent → brief with exit criteria → run reviewers → collect findings → ask agent to revise → ask you to approve → move to next item
 
 **When you request to extend the framework:**
-- Add phase: I create `0X-name/CLAUDE.md` + producer agent + update orchestration-protocol.md (or you update, I review)
-- Add reviewer: I create agent + update `.claude/agents/README.md` + matrix
-- Change criteria: I update phase CLAUDE.md + create ADR documenting why
+See `.claude/docs/framework-development.md` for detailed procedures. In brief:
+- **Add/modify a reviewer:** Test on real work-list item → create agent → update matrix → validate no regressions
+- **Evolve the framework (new phase, policy, etc.):** File ADR → run governance-improvement pipeline (5 phases) → validate on real projects → document adoption
+- **Customize for your project:** Update GLOSSARY.md + work-list.json + phase criteria + add domain reviewers
 
 ---
 
@@ -135,6 +136,7 @@ All state lives in git:
 | **Phase docs** | `01-define/CLAUDE.md`, `02-spec/CLAUDE.md`, etc. (exit criteria, reviewers) |
 | **Templates** | Each phase folder (prd, journey, spec, build-order, test-plan, etc.) |
 | **Framework evolution** | `.claude/docs/FRAMEWORK-EVOLUTION.md`, `governance-framework-improvement/` |
+| **Framework development** | `.claude/docs/framework-development.md` (step-by-step: test agents, evolve framework, customize for projects) |
 | **ADR template** | `decisions/adr-template.md` |
 
 ---
