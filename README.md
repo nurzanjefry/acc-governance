@@ -10,17 +10,17 @@ Not project-specific. Use this as a template for new projects.
 
 ### For a New Project
 
-Copy `acc-governance/` to `projects/my-project/`, then:
+Clone or download `acc-governance`, then:
 ```
-cd projects\my-project
-init.bat
+cd acc-governance
+./init.bat
 ```
 
 This pre-populates the project with base structure (5 phases, work-list.json, PROGRESS.md).
 
 Then:
 ```
-claude-code agent project-init --project my-project
+claude-code agent project-init
 ```
 
 The project-init agent will:
@@ -135,17 +135,17 @@ Run in parallel after each producer finishes.
 
 **Option A: Automated (Recommended)**
 
-Copy `acc-governance/` to `projects/my-project/`, then:
+Clone or download `acc-governance`, then:
 ```
-cd projects\my-project
-init.bat
+cd acc-governance
+./init.bat
 ```
 
 This pre-populates the project with base structure (5 phases, work-list.json, PROGRESS.md).
 
 Then:
 ```
-claude-code agent project-init --project my-project
+claude-code agent project-init
 ```
 
 The project-init agent will:
