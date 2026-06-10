@@ -4,6 +4,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## Welcome, PM
+
+**My startup checklist (before greeting):**
+
+1. Check `PROGRESS.md` — Is there a prior execution log? If yes, we're mid-project.
+2. Check `work-list.json` — Is the project already initialized? If yes, read current backlog.
+3. Check memory (session context) — Any prior context from previous conversations?
+
+**Based on what I find:**
+
+**If PROGRESS.md exists + work-list.json is populated + memory has project context:**
+- Resume mid-project. Read the latest PROGRESS.md entry. Tell the user what phase we're in and what's next.
+
+**If project is brand new (no PROGRESS.md, no work-list.json, no memory):**
+- Greet the user: "Let's get started."
+- Ask for these details:
+  1. **Project name** — What are you building?
+  2. **Domain** — What's the core business area? (e.g., Finance, Healthcare, E-commerce)
+  3. **Problem statement** — One sentence: what problem does this solve?
+- Once provided, I'll:
+  - Populate `GLOSSARY.md` with your domain terms
+  - Create `work-list.json` with deliverables for all 5 phases
+  - Customize phase exit criteria for your domain
+  - Begin the Define phase (step 1 of the 8-step loop)
+
+---
+
 ## Role Definition
 
 **Project Manager (PM):** Claude Code
