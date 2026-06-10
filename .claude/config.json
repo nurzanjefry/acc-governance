@@ -1,0 +1,86 @@
+{
+  "project": "<PROJECT_NAME>",
+  "description": "<PROJECT_DESCRIPTION>",
+
+  "artifact_management": {
+    "description": "Safeguards for temporary artifact creation during agent work",
+    "enabled": true,
+    "cleanup": {
+      "orphaned_artifact_age_hours": 2,
+      "cleanup_at_session_start": true,
+      "description": "Artifacts older than 2 hours are considered orphaned and cleaned up at session start"
+    },
+    "limits": {
+      "max_artifacts_per_task": 100,
+      "max_artifact_size_mb": 50,
+      "max_artifact_creation_rate_per_minute": 20,
+      "description": "If exceeded, PM stops agent and escalates to human"
+    },
+    "monitored_temp_patterns": [
+      ".claude/logs/agent-*.md",
+      "*.debug-temp",
+      "*.test-scratch",
+      ".claude/temp/*"
+    ]
+  },
+
+  "review_gates": {
+    "description": "Mandatory review cycles before phase progression",
+    "security_pre_push": {
+      "enabled": true,
+      "stage": "before_commit",
+      "rule": "security-reviewer must PASS (Mode A + B) before any commit to feature branch"
+    },
+    "phase_completion": {
+      "enabled": true,
+      "stage": "after_producer_complete",
+      "rule": "All phase-specific reviewers (from agent/README.md matrix) must PASS before proceeding to next phase"
+    },
+    "human_merge_gate": {
+      "enabled": true,
+      "stage": "before_main_merge",
+      "rule": "Only human can merge PR to main; PM cannot merge"
+    }
+  },
+
+  "tracking": {
+    "progress_md": {
+      "required": true,
+      "timing": "After every agent review cycle (producer + reviewers complete)",
+      "owner": "PM (if agent didn't log it)"
+    },
+    "work_list_json": {
+      "required": true,
+      "timing": "After every agent review cycle (producer + reviewers complete)",
+      "owner": "PM only (agents cannot update status to passing)"
+    },
+    "session_logs": {
+      "location": ".claude/logs/agent-<task>-<timestamp>.md",
+      "gitignored": true,
+      "cleanup": "Agent deletes on completion; PM deletes orphaned >2h old"
+    }
+  },
+
+  "phase_sequence": {
+    "01-define": {
+      "owner": "define-author",
+      "exit_criteria": "product-definition.md, roles-and-permissions.md, user-journey.md complete; all reviewers PASS"
+    },
+    "02-spec": {
+      "owner": "spec-author",
+      "exit_criteria": "stack.md, data-model.md, receipt-pipeline.md, tech-spec.md, coding-standards.md, test-plan.md complete; all reviewers PASS"
+    },
+    "03-build": {
+      "owner": "build-author",
+      "exit_criteria": "Source code implemented per 02-spec; all tests >80% critical paths; all reviewers PASS"
+    },
+    "04-reconciliation": {
+      "owner": "reconciliation-author",
+      "exit_criteria": "Reconciliation rules, matching engine, data model extensions complete; all reviewers PASS"
+    },
+    "05-test-ship": {
+      "owner": "ship-author",
+      "exit_criteria": "Test plan executed, monitoring configured, deployment documented; all reviewers PASS"
+    }
+  }
+}
