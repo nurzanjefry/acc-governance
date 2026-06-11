@@ -30,7 +30,8 @@ When an agent completes a task, it **MUST** return a JSON summary for the PM. Th
   "verification_notes": "No TODOs remaining. All entity names match GLOSSARY.md. RBAC + audit logging modeled. Offline sync supported via idempotency_key.",
   "ready_for_review": true,
   "issues": [],
-  "artifacts_created": []
+  "artifacts_created": [],
+  "references_to_update": []
 }
 ```
 
@@ -50,6 +51,7 @@ When an agent completes a task, it **MUST** return a JSON summary for the PM. Th
 | `ready_for_review` | boolean | ✓ | Is this ready to dispatch to reviewers, or does it need agent revision first? |
 | `issues` | array | optional | Blockers, unknowns, or known gaps. Empty list = [] if none. |
 | `artifacts_created` | array | optional | Temporary files created during work (debug logs, test outputs, session logs). Each: {path, reason, cleanup_status}. Empty list = [] if none created or all cleaned up. **cleanup_status** values: "deleted" (agent already deleted it, info only), "pending_cleanup" (agent couldn't delete; PM will delete). PM uses this to clean up after agent finishes. |
+| `references_to_update` | array | required | Docs where this task's output should be linked. Each: {file, location, link_text}. Empty list = [] if no references needed. PM executes all reference writes — agents never write these directly. Example: `{"file": "02-spec/CLAUDE.md", "location": "deliverables list", "link_text": "data-model.md"}` |
 
 ## Example: spec-001 & spec-002 complete
 
