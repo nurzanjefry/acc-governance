@@ -61,7 +61,17 @@ cd my-project
 claude
 ```
 
-**2. PM greets you:**
+**2. Start the PM:**
+If Claude doesn't greet you automatically, type:
+```
+Hey, what can I do here?
+```
+or
+```
+Help me get started
+```
+
+**3. PM greets you:**
 ```
 PM: I see framework.json. What would you like to do?
     1. Use — create or continue a project
@@ -69,23 +79,23 @@ PM: I see framework.json. What would you like to do?
 ```
 **You:** `Use`
 
-**3. PM asks what to build:**
+**4. PM asks what to build:**
 ```
 PM: What are you building?
 ```
 **You:** `A PWA for in-store food ordering with receipt reconciliation`
 
-**4. PM initializes:**
+**5. PM initializes:**
 - Runs `project-initializer` → creates `work-list.json` + `GLOSSARY.md`
 - Shows generated backlog (Define → Spec → Build → Reconciliation → Test/Ship)
 
-**5. PM starts working:**
+**6. PM starts working:**
 ```
 PM: Ready to start Phase 1 (Define)? I'll dispatch define-author.
 ```
 **You:** `Yes` or `Go ahead`
 
-**6. PM orchestrates:**
+**7. PM orchestrates:**
 - Dispatches agent → produces deliverable
 - Runs reviewers → flags issues
 - Synthesizes findings → presents to you
@@ -94,7 +104,7 @@ PM: All reviewers PASS. Approve?
 ```
 **You:** `Approve` or `Request changes: [feedback]`
 
-**7. Repeat:**
+**8. Repeat:**
 PM loops through backlog. You approve at each gate. PRs auto-created → you merge on GitHub.
 
 **That's it.** PM handles orchestration, agents do the work, you make decisions.
