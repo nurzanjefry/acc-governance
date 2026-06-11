@@ -12,6 +12,7 @@ Custom subagents that drive a **producer → review → fix** loop, scoped to th
 - [Agent rules](../docs/rules.md) — what you can do, what requires approval, JSON output format
 - [Output format](output-format.md) — JSON schema agents must return when done
 - [Guardrails](../docs/guardrails.md) — restricted actions (secrets, scope, git, PII, external services)
+- [Memory system](../memory/README.md) — cross-session knowledge (read-only for agents, PM-curated)
 
 **For the PM (main session):**
 - [Orchestration protocol](../docs/orchestration-protocol.md) — the 8-step loop (orient → pick → brief → review → revise → score → gate → close out)

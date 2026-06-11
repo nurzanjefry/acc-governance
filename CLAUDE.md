@@ -100,6 +100,7 @@ See `.claude/docs/ROLES.md` for formal role definitions.
 | `GLOSSARY.md` | Domain terminology |
 | `decisions/adr-*.md` | Architectural decisions |
 | `framework.json` | Framework identity — framework repo only, never in projects |
+| `.claude/memory/` | Cross-session knowledge cache (PM-curated, optional) |
 
 ---
 
@@ -112,6 +113,7 @@ See `.claude/docs/ROLES.md` for formal role definitions.
 | **Framework overview** | `.claude/docs/framework-overview.md` (architecture, agents, phases) |
 | **Formal roles** | `.claude/docs/ROLES.md` |
 | **Core protocols** | `.claude/docs/orchestration-protocol.md`, `.claude/docs/rules.md`, `.claude/docs/guardrails.md` |
+| **Memory system** | `.claude/memory/README.md` (cross-session knowledge cache) |
 | **Evaluator rubric** | `.claude/docs/evaluator-rubric.md` (PM fills at Step 7 before Owner gate) |
 | **Agents** | `.claude/agents/README.md` |
 | **Phase docs** | `01-define/CLAUDE.md` through `05-test-ship/CLAUDE.md` |

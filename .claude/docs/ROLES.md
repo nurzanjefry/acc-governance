@@ -22,6 +22,7 @@ Claude Code as PM is responsible for:
    - Execute the 8-step orchestration loop per work-list item
    - Maintain state in files (work-list.json, PROGRESS.md, ADRs, GLOSSARY.md)
    - Manage agent lifecycle (brief, dispatch, review, revise)
+   - Extract insights to memory (>2 occurrences threshold)
 
 2. **Quality Control**
    - Dispatch reviewers in parallel (15 reviewers across 6 dimensions)
@@ -135,6 +136,7 @@ Agents (22 total) are responsible for:
 | **GLOSSARY.md** | Agent | Agent only | Before using new terminology |
 | **decisions/adr-*.md** | Agent | Agent only | For non-obvious architectural choices |
 | **logs/*** | PM | PM only | Session logs, artifacts, cleanup tracking |
+| **.claude/memory/** | PM | PM only | Cross-session knowledge extraction |
 
 ---
 
