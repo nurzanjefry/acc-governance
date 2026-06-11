@@ -1,21 +1,40 @@
-# acc-governance (Agent Control Center Governance)
+# acc-governance
 
-**A fully-agentic, deterministic project management framework for end-to-end product creation, development, and orchestration through 5 phases: Define → Spec → Build → Reconciliation → Test & Ship.**
+**A framework that turns Claude Code into your AI project manager.**
+
+You describe what you want to build. Claude Code runs a team of 30 AI agents — writers, reviewers, and a git executor — to produce specs, code, and decisions across 5 phases. At every key decision, it stops and asks for your approval before moving on.
+
+Everything is tracked in plain files committed to git, so the project is always resumable, auditable, and yours.
 
 ---
 
-## Role Definition
+## Who does what
 
-**Project Manager (PM):** Claude Code
-- Execute orchestration protocol, manage agents, synthesize findings, present to Owner
+| Role | Who | What they do |
+|------|-----|--------------|
+| **You (Owner)** | Human | Describe what to build, approve work, make calls when agents disagree |
+| **PM** | Claude Code | Runs the agents, synthesizes findings, presents decisions for your approval |
+| **Workers** | 30 AI agents | Write deliverables, review each other's work, commit to git |
 
-**Owner/Executive:** You
-- Define objectives, approve phase advancement, make strategic decisions
+You stay in control. The PM never merges code, never spends your approval on something you haven't seen, and stops at every gate until you say go.
 
-**Workers:** 22 AI Agents
-- Execute assigned work, conduct peer review, commit to version control
+---
 
-See `CLAUDE.md` and `.claude/docs/ROLES.md` for formal role definitions and governance structure.
+## What You Get
+
+| Feature | Description |
+|---------|-------------|
+| **5-phase workflow** | Define → Spec → Build → Reconciliation → Test & Ship — each phase has defined deliverables, exit criteria, and reviewers |
+| **Parallel review** | Up to 15 reviewer agents run simultaneously after each writer finishes — no waiting in line |
+| **Auto revision cycles** | Writers fix reviewer blockers automatically, up to 5 rounds, before escalating to you |
+| **Human approval gates** | PM stops and waits for your sign-off at every phase transition — nothing merges without you |
+| **Full audit trail** | Every agent run, finding, and your decision is logged to `PROGRESS.md` and committed to git |
+| **Resumable sessions** | Close the terminal, come back tomorrow — the PM reads state from files and picks up exactly where it left off |
+| **Decision records** | Every architectural choice is recorded in `decisions/adr-*.md` with the reasoning, so future-you knows why |
+| **Security on every phase** | `security-reviewer` runs automatically on every phase — can't be skipped |
+| **Self-improving** | "Maintain" mode lets you improve the framework itself using the same 5-phase pipeline |
+| **Multi-project** | One framework repo, many projects — each project links back via `project.json` |
+| **Branch protection** | `master` is protected; all changes go through PRs that only you can merge |
 
 ---
 
@@ -25,59 +44,52 @@ See `CLAUDE.md` and `.claude/docs/ROLES.md` for formal role definitions and gove
 - **Git** — For version control
 - **Text editor** — For reading/editing project files
 
+### Which Claude model do you need?
+
+**Claude Haiku is enough.** The framework is designed so Haiku handles all 30 agents efficiently — it's fast, cheap, and produces good output for structured tasks like reviewing and writing specs. You don't need Sonnet or Opus to use this. The main Claude Code session (your PM) also runs fine on Haiku.
+
+If you want higher output quality on complex producer tasks (e.g., writing a detailed data model), switch the PM session to Sonnet. But start with Haiku — it's sufficient for most projects.
+
 ---
 
 ## Quick Start
 
-**1. Copy the framework:**
+**1. Clone the framework:**
 ```bash
-git clone <repo-url> my-project
+git clone https://github.com/nurzanjefry/acc-governance.git my-project
 cd my-project
 ```
 
-**2. Read CLAUDE.md** (explains PM role + how to set up):
+**2. Open Claude Code:**
 ```bash
-# Open CLAUDE.md — it has full startup instructions
+claude
 ```
+Claude Code detects `framework.json`, enters Framework Mode, and asks: **Use** (start/continue a project) or **Maintain** (improve the framework). Choose **Use** for a new project — it will walk you through initialization and populate `work-list.json` and `GLOSSARY.md` for you.
 
-**3. Update project files for your domain:**
-- `GLOSSARY.md` — Add your domain terminology
-- `work-list.json` — Define your deliverables (or let project-init populate it)
-- Phase `CLAUDE.md` files — Customize exit criteria if needed
-
-**4. Open in Claude Code:**
-```bash
-claude-code
-```
-I (Claude Code) am your Project Manager. I'll orchestrate the 8-step loop and ask you for approval on business decisions. Follow CLAUDE.md's "Welcome, Project Manager" section.
+**3. (Optional) Customise before initializing:**
+- `GLOSSARY.md` — add your domain terminology
+- `work-list.json` — define your deliverables manually
+- Phase `CLAUDE.md` files — override exit criteria
 
 ---
 
 ## How It Works
 
-**Three-layer execution model:**
+**You define the work. The PM runs it.**
 
-| Layer | Actor | Function |
-|-------|-------|----------|
-| **Strategic** | Owner | Define objectives, approve phase advancement, authorize decisions |
-| **Operational** | Claude PM | Execute 8-step loop, manage agents, synthesize quality findings |
-| **Execution** | 22 Agents | Write deliverables, conduct peer review, commit output |
+1. You add items to `work-list.json` (or let the initializer populate it from your description)
+2. The PM picks one item at a time, sends it to the right writer agent, then fans out to up to 15 reviewer agents in parallel
+3. Reviewers flag blockers — the writer fixes them (up to 5 rounds)
+4. The PM scores the result and **stops for your approval**
+5. Once you approve, git-author commits and opens a PR — you merge on GitHub
 
-**Per work-list item, PM executes:**
-1. Orient — Read work-list.json, PROGRESS.md, phase CLAUDE.md
-2. Pick — Select one not_started item; set in_progress
-3. Choose — Route to appropriate producer agent
-4. Brief — Provide item, exit criteria, context files
-5. Review — Dispatch 15 reviewers in parallel (6 quality dimensions)
-6. Revise — Synthesize findings; brief agent for batch revision (max 5 cycles)
-7. Score & Gate — Present to Owner for approval
-8. Close Out — Mark item passing; update tracking; log to PROGRESS.md
+Repeat until the work-list is empty.
 
-**State lives in git (resumable, auditable):**
-- `work-list.json` — Backlog + item status
-- `PROGRESS.md` — Audit log of every execution
-- `decisions/adr-*.md` — Architectural decisions (why choices were made)
-- `GLOSSARY.md` — Canonical terminology
+**Nothing gets lost between sessions.** All state lives in committed files:
+- `work-list.json` — what's done, what's next, what's blocked
+- `PROGRESS.md` — full audit log of every agent run
+- `decisions/adr-*.md` — why choices were made
+- `GLOSSARY.md` — canonical terminology for your domain
 
 ---
 
@@ -91,50 +103,40 @@ acc-governance/
 ├── 04-reconciliation/ — Domain logic validation (if needed)
 ├── 05-test-ship/ — Testing & deployment (test plan, tracking, runbooks)
 ├── decisions/ — ADR templates and architectural decision records
-├── .claude/ — Agents (22 total), protocols, configurations
-│   ├── agents/ — 5 producers + 15 reviewers + 1 executor + 1 project-init
+├── .claude/ — Agents (30 total), protocols, configurations
+│   ├── agents/ — 5 project producers + 5 framework producers + 15 project reviewers + 3 framework reviewers + 1 executor + 1 initializer
 │   └── docs/ — Orchestration protocol, rules, guardrails, runbooks
 ├── CLAUDE.md — Developer guidance for working with this framework
 ├── GLOSSARY.md — TEMPLATE: define your domain terms here
 ├── work-list.json — TEMPLATE: project backlog and deliverables
-├── PROGRESS.md — TEMPLATE: audit log of agent executions
+├── PROGRESS.md — Audit log of agent executions (append-only; created on first use)
 └── README.md — This file
 ```
 
 ---
 
-## The 22 Agents
+## The 30 Agents
 
-### Producers (One per Phase)
-- **define-author** — Phase 1 (product definition)
-- **spec-author** — Phase 2 (technical architecture)
-- **build-author** — Phase 3 (implementation)
-- **reconciliation-author** — Phase 4 (domain logic)
-- **ship-author** — Phase 5 (testing & deployment)
+### Project Producers (5) — One per phase
+- **define-author**, **spec-author**, **build-author**, **reconciliation-author**, **ship-author**
 
-### Specialist Reviewers (15 Total)
-Run in parallel after each producer finishes.
+### Project Reviewers (15) — Run in parallel after each producer
+- **Correctness:** terminology-reviewer, scope-reviewer, decisions-reviewer
+- **Design quality:** architecture-reviewer, data-model-reviewer, security-architect
+- **Quality attributes:** test-strategy-reviewer, performance-reviewer, observability-architect
+- **Operational:** api-contract-reviewer, infrastructure-reviewer, monitoring-reviewer, tech-debt-reviewer
+- **Documentation:** docquality-reviewer
+- **Permanent (every phase):** security-reviewer ★
 
-**Correctness Dimension:**
-- terminology-reviewer, scope-reviewer, decisions-reviewer
+### Framework Producers (5) — Used in Maintain mode only
+- **framework-definer**, **framework-architect**, **framework-builder**, **framework-validator**, **framework-shipper**
 
-**Design Quality:**
-- architecture-reviewer, data-model-reviewer, security-architect
+### Framework Reviewers (3) — Used in Maintain mode only
+- **framework-consistency-reviewer**, **backward-compatibility-reviewer**, **adoption-readiness-reviewer**
 
-**Quality Attributes:**
-- test-strategy-reviewer, performance-reviewer, observability-architect
-
-**Operational:**
-- api-contract-reviewer, infrastructure-reviewer, monitoring-reviewer, tech-debt-reviewer
-
-**Documentation:**
-- docquality-reviewer
-
-**Permanent (Every Phase):**
-- security-reviewer ★ (secret scan + design review)
-
-### Executor
+### Executor & Initializer (2)
 - **git-author** — Handles commits/PRs (only after security approval)
+- **project-initializer** — Bootstraps new projects from the framework template
 
 ---
 
@@ -149,7 +151,7 @@ Run in parallel after each producer finishes.
 7. **Score & gate** — Rubric: 6 dimensions, 0–2 scoring, max 12 points
 8. **Close out** — Mark item passing, log to PROGRESS.md
 
-See `.claude/docs/orchestration-protocol.md` for full details.
+See the Documentation section below for full details.
 
 ---
 
@@ -179,23 +181,23 @@ The framework is generic. For your project:
 - **Override exit criteria** (edit phase CLAUDE.md)
 - **Customize templates** (templates in each phase folder are starting points)
 
-See CLAUDE.md § "Development Guidelines" for how.
+See `.claude/docs/use-mode.md` (for project-level changes) or `.claude/docs/maintain-mode.md` (for framework-level changes).
 
 ---
 
 ## Common Questions
 
 **Q: How do I start a brand new project?**
-A: Copy acc-governance/ → Open CLAUDE.md → Follow "Welcome, PM" section → It will ask for project name + domain.
+A: `git clone` the repo → run `claude` → Claude detects `framework.json` and enters Framework Mode → choose "Use" → it will walk you through initialization.
 
 **Q: What if I'm already mid-project?**
-A: Read CLAUDE.md, read latest PROGRESS.md entry, read your work-list.json, follow 8-step PM loop starting at "Pick One Item".
+A: Run `claude` → Claude detects the mode automatically → reads `PROGRESS.md` and `work-list.json` → reports current phase and next pending item.
 
 **Q: How do I add a new phase?**
 A: Create 0X-name/CLAUDE.md (exit criteria, deliverables, reviewers) + create producer agent + update orchestration-protocol.md.
 
 **Q: My agent found a bug in the framework itself?**
-A: Use governance-framework-improvement/ parallel pipeline to propose + test + ship improvements.
+A: Run `claude` → choose "Maintain" → use the `.claude/governance-improvement/` pipeline to propose, spec, build, validate, and ship the fix.
 
 ---
 
