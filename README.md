@@ -61,7 +61,17 @@ cd my-project
 claude
 ```
 
-**2. PM greets you:**
+**2. Start the PM:**
+If Claude doesn't greet you automatically, type:
+```
+Hey, what can I do here?
+```
+or
+```
+Help me get started
+```
+
+**3. PM greets you:**
 ```
 PM: I see framework.json. What would you like to do?
     1. Use — create or continue a project
@@ -69,23 +79,23 @@ PM: I see framework.json. What would you like to do?
 ```
 **You:** `Use`
 
-**3. PM asks what to build:**
+**4. PM asks what to build:**
 ```
 PM: What are you building?
 ```
 **You:** `A PWA for in-store food ordering with receipt reconciliation`
 
-**4. PM initializes:**
+**5. PM initializes:**
 - Runs `project-initializer` → creates `work-list.json` + `GLOSSARY.md`
 - Shows generated backlog (Define → Spec → Build → Reconciliation → Test/Ship)
 
-**5. PM starts working:**
+**6. PM starts working:**
 ```
 PM: Ready to start Phase 1 (Define)? I'll dispatch define-author.
 ```
 **You:** `Yes` or `Go ahead`
 
-**6. PM orchestrates:**
+**7. PM orchestrates:**
 - Dispatches agent → produces deliverable
 - Runs reviewers → flags issues
 - Synthesizes findings → presents to you
@@ -94,10 +104,36 @@ PM: All reviewers PASS. Approve?
 ```
 **You:** `Approve` or `Request changes: [feedback]`
 
-**7. Repeat:**
+**8. Repeat:**
 PM loops through backlog. You approve at each gate. PRs auto-created → you merge on GitHub.
 
 **That's it.** PM handles orchestration, agents do the work, you make decisions.
+
+### Example: First-time user
+
+```
+You: hey guide me
+
+PM: Here's a quick overview to help you get oriented:
+
+    What is acc-governance?
+    
+    A structured framework for building software projects through 5 phases: Define → Spec → 
+    Build → Reconciliation → Test & Ship. It uses state files, specialized agents, and quality 
+    gates to keep projects on track.
+    
+    Getting Started
+    
+    What would you like to do?
+    
+    1. Start a new project — I'll help you create one (embedded in the framework or standalone)
+    2. Link an existing project — Connect your current work to the framework
+    3. Learn the workflow — Understand how the 8-step loop works
+    4. Understand the files — What project.json, work-list.json, and other state files do
+    5. Something else — Just tell me what you're trying to accomplish
+    
+    Let me know which direction interests you, or if you have a specific question about the framework.
+```
 
 ---
 
@@ -163,11 +199,17 @@ acc-governance/
 - **Documentation:** docquality-reviewer
 - **Permanent (every phase):** security-reviewer ★
 
-### Framework Producers (5) — Used in Maintain mode only
-- **Improvement pipeline:** framework-definer, framework-architect, framework-builder, framework-validator, framework-shipper
+### Framework Producers (5) — Maintain mode only (governance-improvement pipeline)
+- **framework-definer** — Analyzes framework flaws, documents philosophy, creates improvement roadmap
+- **framework-architect** — Designs detailed specs for improvements (schemas, templates, agents)
+- **framework-builder** — Builds the improvements (code, schemas, templates, docs)
+- **framework-validator** — Tests improvements on real projects, generates validation and regression reports
+- **framework-shipper** — Creates migration plan, adoption guide, and comprehensive handbook
 
-### Framework Reviewers (3) — Used in Maintain mode only
-- **Governance:** framework-consistency-reviewer, backward-compatibility-reviewer, adoption-readiness-reviewer
+### Framework Reviewers (3) — Maintain mode only (run in parallel after framework producers)
+- **framework-consistency-reviewer** — Audits that improvements honor core principles (state-in-files, stateless agents, deterministic loops)
+- **backward-compatibility-reviewer** — Audits that changes don't break existing projects or require forced migration
+- **adoption-readiness-reviewer** — Audits that improvements are documented and adoptable by new teams
 
 ### Executor & Initializer (2)
 - **git-author** — Handles commits/PRs (only after security approval)
@@ -221,6 +263,8 @@ See `.claude/docs/use-mode.md` (for project-level changes) or `.claude/docs/main
 ---
 
 ## Common Questions
+
+**For detailed answers, see [.claude/docs/faq.md](.claude/docs/faq.md)**
 
 **Q: How do I start a brand new project?**
 A: `git clone` the repo → run `claude` → Claude detects `framework.json` and enters Framework Mode → choose "Use" → it will walk you through initialization.
