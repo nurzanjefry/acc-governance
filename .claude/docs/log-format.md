@@ -61,6 +61,27 @@ These two records are the recovery point if an agent errors mid-task.
 
 ---
 
+## DECISION Record (PM writes after Owner responds at Step 7)
+
+```markdown
+## DECISION — <item-id>
+
+- Time: <ISO 8601>
+- Decision: Accept | Request changes | Reject
+- Owner rationale: <verbatim or close paraphrase — required, not optional>
+- Outcome:
+  - Accept → item status set to `passing`, proceed to step 8
+  - Request changes → revision loop restarted with Owner feedback outranking reviewers
+  - Reject → item status set to `reopened`, reason: <Owner's reason>
+- Owner: <name or "Framework Owner">
+```
+
+**When to write:** Immediately after Owner responds at the Step 7 approval gate. Every gate decision is recorded — accept, change request, and reject alike.
+
+**Why:** Owner decisions are the governance mechanism. If a decision is not captured, there is no audit trail for why the project moved in a particular direction. This record is the institutional memory for judgment calls that no reviewer can derive from code.
+
+---
+
 ## Orphan Detection
 
 At session start, PM checks for items where:

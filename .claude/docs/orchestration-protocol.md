@@ -27,12 +27,12 @@ To avoid concurrent modification conflicts and retry loops, follow these ownersh
 |---|---|---|
 | Write spec/code files (deliverables) | ❌ Never | ✅ Only |
 | Write tracking files (work-list.json, PROGRESS.md) | ✅ Only | ❌ Never* |
-| Update GLOSSARY.md (add new terms) | ❌ Never | ✅ Only |
+| Update GLOSSARY.md (add new terms) | ✅ Only | ❌ Never |
 | Commit and push deliverables | ❌ Never | ✅ Only |
 | Dispatch reviewers | ✅ Only | ❌ Never |
 | Brief agents on issues/revisions | ✅ Only | ❌ Never |
 
-*Exception: Agent can log PROGRESS.md entry themselves (set `updates.progress_md_logged: true` in JSON summary). If PROGRESS.md doesn't exist, agent SHOULD create it following the template in `01-define/CLAUDE.md` (or equivalent phase) rather than waiting for PM.
+Agents declare what to update via `references_to_update` in their JSON summary. PM executes all writes to shared files. See ADR-005 and `.claude/docs/rules.md` — Agent concurrency model.
 
 **Why:** Single owner per file eliminates concurrent edit conflicts. If PM needs to fix something in a deliverable, brief the agent to revise it in the next round (don't edit directly).
 
@@ -881,7 +881,7 @@ If any reviewer returns `CHANGES REQUESTED` or `BLOCK`:
 
 Once all reviewers PASS (or 5-round cap hit + escalated):
 
-**Fill evaluator rubric** (see `.claude/agents/evaluator-rubric.md`):
+**Fill evaluator rubric** (see `.claude/docs/evaluator-rubric.md`):
 - Correctness (exit criteria met? no contradictions?)
 - Verification (spot-checked files? evidence recorded?)
 - Scope (serves the 9-step flow? no drift?)
@@ -900,6 +900,10 @@ Once all reviewers PASS (or 5-round cap hit + escalated):
 - **Accept:** Proceed to step 8 (close out)
 - **Request changes:** Loop back to step 6 (revision), but with human's feedback outranking reviewers
 - **Reject:** Mark item as `reopened` with reason; loop back to step 3 (pick new approach or new worker)
+
+**After Owner responds, PM immediately writes a DECISION record to `logs/<item-id>.md`.**
+Record the decision, Owner's rationale (verbatim or close paraphrase), and outcome.
+See `.claude/docs/log-format.md` — DECISION record format. This is mandatory — no Owner decision goes unrecorded.
 
 ### Step 8: Close Out
 

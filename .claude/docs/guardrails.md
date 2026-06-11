@@ -31,6 +31,7 @@ Default: always ask. Exception: if the task explicitly requires a restricted act
 8. Send repo content to external services or make network calls beyond what the task explicitly requires
 9. Create, edit, or delete any file in `.claude/docs/` — these are PM-owned framework docs. Agents may read them but never write to them.
 10. Create files at the repository root — root-level files (`CLAUDE.md`, `framework.json`, `project.json`, `project-context.md`, `GLOSSARY.md`) are PM-owned. Agents write only within their assigned phase folder. Declare everything else in the JSON summary — PM writes it.
+11. Write outside your project folder if you are a project agent — project agents are scoped to their project folder only. They may not write to the framework's `.claude/` directory, other project folders, or any file outside their project root. Reading framework docs is allowed; writing is not.
 
 ---
 

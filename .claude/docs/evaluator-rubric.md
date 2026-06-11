@@ -1,8 +1,6 @@
-# Evaluator rubric — MOVED
+# Evaluator rubric — human approval gate
 
-This file has moved to `.claude/docs/evaluator-rubric.md`.
-
-This copy is kept only to avoid broken references in older sessions. Read the canonical version at `.claude/docs/evaluator-rubric.md`.
+Applied at the **human approval gate** (Step 7 of orchestration protocol), after automated reviewers reach `PASS` or hit the revision-round cap. PM fills the scorecard from producer output + reviewer findings + verification evidence; **the Owner sets the final verdict.**
 
 Score each dimension **0–2**: `0` = absent/failing, `1` = partial, `2` = solid.
 
@@ -19,15 +17,19 @@ Score each dimension **0–2**: `0` = absent/failing, `1` = partial, `2` = solid
 
 ## Verdict (→ gate action)
 
-- **Accept** (= Approve) — output is final; advance to the next item/phase.
-- **Revise** (= Request changes) — feed the gaps back into the revision loop.
-- **Block** (= Reject) — discard and restart the producer from scratch.
+- **Accept** — output is final; advance to the next item/phase.
+- **Request changes** — feed the gaps back into the revision loop.
+- **Reject** — discard and restart the producer from scratch.
 
 Guidelines:
 - Any dimension at `0` → **not** Accept.
-- **Verification at `0` is an automatic Revise/Block** regardless of total — a passing automated review is not the same as demonstrated work.
+- **Verification at `0` is an automatic Request changes/Reject** regardless of total — a passing automated review is not the same as demonstrated work.
 
 ## Required follow-up
 - Missing evidence:
 - Required fixes:
 - Next review trigger:
+
+---
+
+**PM:** After Owner decides, write a DECISION record to `logs/<item-id>.md`. See `.claude/docs/log-format.md`.

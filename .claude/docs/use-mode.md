@@ -90,6 +90,6 @@ See `.claude/docs/orchestration-protocol.md` for full protocol details.
 ## Customizing for Your Project
 
 - **Add domain terms:** Update `GLOSSARY.md` — all agents check this first
-- **Add domain-specific reviewer:** Create agent in `.claude/agents/`, add to phase CLAUDE.md reviewer list
+- **Add domain-specific reviewer:** Create agent in your project's local `.claude/agents/` folder (not the framework's). Name it `[project-slug]-[role]` (e.g., `acme-payment-reviewer`). Add to phase CLAUDE.md reviewer list. Project agents write only within the project folder — see `.claude/docs/rules.md` project agent isolation rules.
 - **Adjust exit criteria:** Edit the phase CLAUDE.md for that phase
 - **Defer a phase:** Mark work item `status: deferred` in `work-list.json`, log reason in `PROGRESS.md`
