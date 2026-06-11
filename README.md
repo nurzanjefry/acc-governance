@@ -54,22 +54,38 @@ If you want higher output quality on complex producer tasks (e.g., writing a det
 
 ## Quick Start
 
-**1. Clone the framework:**
+**1. Clone and open:**
 ```bash
 git clone https://github.com/nurzanjefry/acc-governance.git my-project
 cd my-project
-```
-
-**2. Open Claude Code:**
-```bash
 claude
 ```
-Claude Code detects `framework.json`, enters Framework Mode, and asks: **Use** (start/continue a project) or **Maintain** (improve the framework). Choose **Use** for a new project — it will walk you through initialization and populate `work-list.json` and `GLOSSARY.md` for you.
 
-**3. (Optional) Customise before initializing:**
-- `GLOSSARY.md` — add your domain terminology
-- `work-list.json` — define your deliverables manually
-- Phase `CLAUDE.md` files — override exit criteria
+**2. Choose your mode:**
+- PM asks: **Use** (start a project) or **Maintain** (improve framework)?
+- Pick **Use** for a new project
+
+**3. Initialize your project:**
+- PM asks: What are you building?
+- Describe your product (e.g., "a PWA for food ordering with receipt reconciliation")
+- PM runs `project-initializer` agent → creates `work-list.json` + `GLOSSARY.md`
+
+**4. Review the backlog:**
+- PM shows generated work items (Define → Spec → Build → Test → Ship)
+- Approve or adjust the breakdown
+
+**5. Start Phase 1:**
+- PM picks first item from `work-list.json`
+- Dispatches `define-author` → writes product definition
+- Reviewers validate (terminology, scope, decisions)
+- PM presents findings → you approve or request changes
+
+**6. Repeat until shipped:**
+- PM loops through backlog (Step 2–8 of orchestration protocol)
+- You approve at each phase gate (Step 7)
+- PRs auto-created → you merge on GitHub
+
+**That's it.** PM handles orchestration, agents do the work, you make decisions.
 
 ---
 
