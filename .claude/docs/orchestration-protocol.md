@@ -907,36 +907,16 @@ See `.claude/docs/log-format.md` — DECISION record format. This is mandatory �
 
 ### Step 8: Close Out
 
-**See `session-wrap-up.md` for detailed checklist and commands.**
+**See `session-wrap-up.md` for the full checklist and commands.**
 
-On Accept:
+On **Accept:**
+- Mark item `passing` in `work-list.json` (status + evidence from agent JSON)
+- PM appends entry to `PROGRESS.md` using agent's `progress_entry` from JSON
+- Write final AFTER record to `logs/<item-id>.md`
+- Surface next candidate item from `work-list.json`
 
-1. **Mark item `passing` in work-list.json:**
-   - Status = `passing`
-   - Evidence = reviewer findings + verification notes (concise, 2-3 bullets)
-   - (Agent returned JSON with the evidence already; PM synthesizes + adds reviewer verdicts)
-
-2. **Ensure PROGRESS.md logged:**
-   - If agent set `updates.progress_md_logged: true`, it's already logged
-   - Else, PM appends entry with: task_id, phase, status, what was done, where it stopped, evidence, next step, refs
-
-3. **Update `PRODUCT-STATUS.md`** (human-facing milestone tracker):
-   - Find the row for this item
-   - Mark ✅ (passing)
-   - Optionally add ship date or notes
-
-4. **Write final status to `logs/<item-id>.md`:**
-   ```markdown
-   ## Final Status
-   **Approved by human:** 2026-06-08 18:45  
-   **Mark:** PASSING  
-   **Ready for:** next phase pickup
-   ```
-
-5. **Surface next candidate item:**
-   - Re-read `work-list.json`
-   - Suggest the next highest-priority `not_started` item
-   - If user has a different preference, take it
+On **Request changes** → loop back to Step 6 with Owner's feedback outranking reviewers.
+On **Reject** → set item `reopened` with reason, loop back to Step 3.
 
 ---
 

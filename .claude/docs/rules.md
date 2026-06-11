@@ -111,8 +111,6 @@ Temporary artifacts (debug logs, test outputs, session logs, scratch files) are 
 
 ---
 
----
-
 ## Artifact Lifecycle & Cleanup Ownership
 
 Artifacts = temporary files created during work (debug logs, session logs, test outputs, scratch files).

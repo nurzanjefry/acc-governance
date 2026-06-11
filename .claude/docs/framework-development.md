@@ -35,7 +35,7 @@ Use this workflow when you need to fix a broken agent, adjust its behavior, or a
 
 ## Evolving the Framework (Adding Reviewers, Phases, or Policies)
 
-The framework evolves through its own deterministic pipeline: `governance-framework-improvement/`.
+The framework evolves through its own deterministic pipeline: `.claude/governance-improvement/`.
 
 ### **The Governance-Improvement Pipeline**
 
@@ -43,11 +43,11 @@ The framework evolves through its own deterministic pipeline: `governance-framew
 
 | Phase | Agent | Owns | Output |
 |-------|-------|------|--------|
-| 1 | `framework-definer` | `governance-framework-improvement/01-framework-define/` | Flaw analysis, philosophy, roadmap (RFC-style) |
-| 2 | `framework-architect` | `governance-framework-improvement/02-framework-spec/` | 7 detailed improvement specs |
-| 3 | `framework-builder` | `governance-framework-improvement/03-framework-build/` | Agent code, schemas, templates |
-| 4 | `framework-validator` | `governance-framework-improvement/04-framework-validation/` | Test results on real projects (no regressions) |
-| 5 | `framework-shipper` | `governance-framework-improvement/05-framework-ship/` | Migration guide, adoption handbook, rollout plan |
+| 1 | `framework-definer` | `.claude/governance-improvement/01-framework-define/` | Flaw analysis, philosophy, roadmap (RFC-style) |
+| 2 | `framework-architect` | `.claude/governance-improvement/02-framework-spec/` | 7 detailed improvement specs |
+| 3 | `framework-builder` | `.claude/governance-improvement/03-framework-build/` | Agent code, schemas, templates |
+| 4 | `framework-validator` | `.claude/governance-improvement/04-framework-validation/` | Test results on real projects (no regressions) |
+| 5 | `framework-shipper` | `.claude/governance-improvement/05-framework-ship/` | Migration guide, adoption handbook, rollout plan |
 
 ### **How to Propose a Change**
 

@@ -4,7 +4,7 @@
 
 Each agent owns its phase folder. Don't edit files outside your phase without explicit approval.
 
-**Your phase folder:** Read CLAUDE.md in `.claude/agents/` to see which phase you own.
+**Your phase folder:** Read `.claude/agents/README.md` to see which phase you own.
 - `define-author` → `01-define/` only
 - `spec-author` → `02-spec/` only
 - `build-author` → `03-build/` only
@@ -12,9 +12,7 @@ Each agent owns its phase folder. Don't edit files outside your phase without ex
 - `ship-author` → `05-test-ship/` only
 
 **Exceptions (always allowed, no approval needed):**
-- Append to `PROGRESS.md` (log your work)
-- Add new terms to `GLOSSARY.md` (never remove/rename existing)
-- Update your own items in `work-list.json` status/evidence fields
+- Include progress entries, status updates, and new glossary terms in your JSON summary — PM writes to shared files (`PROGRESS.md`, `work-list.json`, `GLOSSARY.md`) from your JSON. Never write to these files directly.
 
 **Other shared files (require approval):**
 - Root `CLAUDE.md` — changes to working rules, guardrails, flow description

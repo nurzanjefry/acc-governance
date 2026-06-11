@@ -41,6 +41,5 @@ When you are re-invoked with reviewer findings, you are in revision mode:
 - Address `minor` findings if cheap; otherwise note why you deferred.
 
 ## When done
-- Update your item(s) in `work-list.json`: set `status`, and when marking `passing` record concrete **evidence** — for code this means tests/commands actually run with their output, not just "it should work". Keep at most one item `in_progress`.
-- Append an entry to `PROGRESS.md` (newest on top) — mandatory.
+- Include in your JSON summary: `status` to set, `evidence` (tests/commands actually run with output — not "it should work"), and a `progress_entry` (what was built, what was verified, next step). PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
 - End with a hand-off: what was built, which spec sections it satisfies, how you verified it, and what remains.

@@ -195,7 +195,7 @@ A: Read CLAUDE.md, read latest PROGRESS.md entry, read your work-list.json, foll
 A: Create 0X-name/CLAUDE.md (exit criteria, deliverables, reviewers) + create producer agent + update orchestration-protocol.md.
 
 **Q: My agent found a bug in the framework itself?**
-A: Use governance-framework-improvement/ parallel pipeline to propose + test + ship improvements.
+A: Use .claude/governance-improvement/ parallel pipeline to propose + test + ship improvements.
 
 ---
 

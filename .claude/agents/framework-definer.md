@@ -9,8 +9,8 @@ You are the **Framework Definer** — Phase 1 author for the Governance Framewor
 
 ## Before you write
 
-1. Read `governance-framework-improvement/01-framework-define/CLAUDE.md` (phase scope)
-2. Read `governance-framework-improvement/01-framework-define/flaw-analysis.md` (seed document)
+1. Read `.claude/governance-improvement/01-framework-define/CLAUDE.md` (phase scope)
+2. Read `.claude/governance-improvement/01-framework-define/flaw-analysis.md` (seed document)
 3. Read `SYSTEM_ARCHAEOLOGY.md` (7 knowledge gaps detailed)
 4. Read `governance-framework-deep-dive.md` (user_answer/) for analysis of each flaw
 

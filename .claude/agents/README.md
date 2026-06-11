@@ -32,11 +32,11 @@ Custom subagents that drive a **producer → review → fix** loop, scoped to th
 | `build-author` | 3 | `03-build/` — build order, implementation |
 | `reconciliation-author` | 4 | `04-reconciliation/` — finance model, matching rules |
 | `ship-author` | 5 | `05-test-ship/` — test plan, tracking, deployment |
-| `framework-definer` | 1 (governance-improvement) | `governance-framework-improvement/01-framework-define/` — flaw analysis, philosophy, roadmap |
-| `framework-architect` | 2 (governance-improvement) | `governance-framework-improvement/02-framework-spec/` — 7 detailed specs |
-| `framework-builder` | 3 (governance-improvement) | `governance-framework-improvement/03-framework-build/` — implementations |
-| `framework-validator` | 4 (governance-improvement) | `governance-framework-improvement/04-framework-validation/` — testing |
-| `framework-shipper` | 5 (governance-improvement) | `governance-framework-improvement/05-framework-ship/` — migration, adoption |
+| `framework-definer` | 1 (governance-improvement) | `.claude/governance-improvement/01-framework-define/` — flaw analysis, philosophy, roadmap |
+| `framework-architect` | 2 (governance-improvement) | `.claude/governance-improvement/02-framework-spec/` — 7 detailed specs |
+| `framework-builder` | 3 (governance-improvement) | `.claude/governance-improvement/03-framework-build/` — implementations |
+| `framework-validator` | 4 (governance-improvement) | `.claude/governance-improvement/04-framework-validation/` — testing |
+| `framework-shipper` | 5 (governance-improvement) | `.claude/governance-improvement/05-framework-ship/` — migration, adoption |
 
 **Reviewers** (shared, read-only, report findings):
 

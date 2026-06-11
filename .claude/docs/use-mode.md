@@ -55,22 +55,11 @@ Read this when the Owner selects **Use** in Framework Mode, or when in Project M
 
 ## The 8-Step Orchestration Loop
 
-Each work item in `work-list.json` follows this loop:
+Each work item follows the PM orchestration loop — Orient → Pick → Brief → Review → Revise → Score → Gate → Close out.
 
-| Step | Action |
-|------|--------|
-| 1. Orient | Read current state: PROGRESS.md, work-list.json, project-context.md |
-| 2. Pick | Select the next pending work item |
-| 3. Choose worker | Select the appropriate producer agent for this phase |
-| 4. Brief | Give the agent: work item, exit criteria, relevant context files only |
-| 5. Review | Run 15 parallel reviewers against the agent's output |
-| 6. Revise | Agent revises based on reviewer findings (up to 5 cycles) |
-| 7. Score & Gate | Present findings to Owner. **Owner approves or rejects phase advancement.** |
-| 8. Close out | Log to PROGRESS.md, update work-list.json, move to next item |
+See `.claude/docs/orchestration-protocol.md` for the full protocol: step-by-step PM actions, reviewer dispatch, revision cycles, DECISION record requirement, and close-out checklist.
 
-**Owner's role at Step 7:** Approve or reject based on business value, risk, and timeline — not technical details. PM presents a summary, not raw reviewer output.
-
-See `.claude/docs/orchestration-protocol.md` for full protocol details.
+**Owner's role at Step 7:** Approve or reject based on business value, risk, and timeline. PM presents a synthesized summary — not raw reviewer output. Every decision is recorded as a DECISION record in `logs/<item-id>.md`.
 
 ---
 

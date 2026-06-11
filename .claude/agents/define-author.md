@@ -36,6 +36,5 @@ When you are re-invoked with reviewer findings, you are in revision mode:
 - Address `minor` findings if cheap; otherwise note why you deferred.
 
 ## When done
-- Update your item(s) in `work-list.json`: set `status`, and when marking `passing` record concrete **evidence** (which exit criteria / verification steps you actually confirmed). Keep at most one item `in_progress`.
-- Append an entry to `PROGRESS.md` (newest on top) per the format there: phase, status, what was done, where you stopped, any blocker, next step, refs. This is mandatory.
+- Include in your JSON summary: `status` to set, `evidence` (which exit criteria you confirmed), and a `progress_entry` with: phase, what was done, where you stopped, any blockers, next step, refs. PM writes to `work-list.json` and `PROGRESS.md` from your JSON — never write to these files directly.
 - End your final message with a short hand-off: what you wrote, which glossary terms you added (if any), any ADRs created, and open questions for review.
