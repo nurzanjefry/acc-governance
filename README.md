@@ -12,7 +12,7 @@
 **Owner/Executive:** You
 - Define objectives, approve phase advancement, make strategic decisions
 
-**Workers:** 22 AI Agents
+**Workers:** 30 AI Agents
 - Execute assigned work, conduct peer review, commit to version control
 
 See `CLAUDE.md` and `.claude/docs/ROLES.md` for formal role definitions and governance structure.
@@ -47,9 +47,9 @@ cd my-project
 
 **4. Open in Claude Code:**
 ```bash
-claude-code
+claude
 ```
-I (Claude Code) am your Project Manager. I'll orchestrate the 8-step loop and ask you for approval on business decisions. Follow CLAUDE.md's "Welcome, Project Manager" section.
+Claude Code is your PM. It will detect `framework.json`, greet you as framework maintainer, and ask whether you want to Use or Maintain the framework. Follow its prompts — CLAUDE.md drives the startup flow.
 
 ---
 
@@ -61,7 +61,7 @@ I (Claude Code) am your Project Manager. I'll orchestrate the 8-step loop and as
 |-------|-------|----------|
 | **Strategic** | Owner | Define objectives, approve phase advancement, authorize decisions |
 | **Operational** | Claude PM | Execute 8-step loop, manage agents, synthesize quality findings |
-| **Execution** | 22 Agents | Write deliverables, conduct peer review, commit output |
+| **Execution** | 30 Agents | Write deliverables, conduct peer review, commit output |
 
 **Per work-list item, PM executes:**
 1. Orient — Read work-list.json, PROGRESS.md, phase CLAUDE.md
@@ -92,7 +92,7 @@ acc-governance/
 ├── 05-test-ship/ — Testing & deployment (test plan, tracking, runbooks)
 ├── decisions/ — ADR templates and architectural decision records
 ├── .claude/ — Agents (22 total), protocols, configurations
-│   ├── agents/ — 5 producers + 15 reviewers + 1 executor + 1 project-init
+│   ├── agents/ — 10 producers + 18 reviewers + 1 executor + 1 initializer (30 total)
 │   └── docs/ — Orchestration protocol, rules, guardrails, runbooks
 ├── CLAUDE.md — Developer guidance for working with this framework
 ├── GLOSSARY.md — TEMPLATE: define your domain terms here
@@ -103,38 +103,28 @@ acc-governance/
 
 ---
 
-## The 22 Agents
+## The 30 Agents
 
-### Producers (One per Phase)
-- **define-author** — Phase 1 (product definition)
-- **spec-author** — Phase 2 (technical architecture)
-- **build-author** — Phase 3 (implementation)
-- **reconciliation-author** — Phase 4 (domain logic)
-- **ship-author** — Phase 5 (testing & deployment)
+### Project Producers (5) — One per phase
+- **define-author**, **spec-author**, **build-author**, **reconciliation-author**, **ship-author**
 
-### Specialist Reviewers (15 Total)
-Run in parallel after each producer finishes.
+### Project Reviewers (15) — Run in parallel after each producer
+- **Correctness:** terminology-reviewer, scope-reviewer, decisions-reviewer
+- **Design quality:** architecture-reviewer, data-model-reviewer, security-architect
+- **Quality attributes:** test-strategy-reviewer, performance-reviewer, observability-architect
+- **Operational:** api-contract-reviewer, infrastructure-reviewer, monitoring-reviewer, tech-debt-reviewer
+- **Documentation:** docquality-reviewer
+- **Permanent (every phase):** security-reviewer ★
 
-**Correctness Dimension:**
-- terminology-reviewer, scope-reviewer, decisions-reviewer
+### Framework Producers (5) — Used in Maintain mode only
+- **framework-definer**, **framework-architect**, **framework-builder**, **framework-validator**, **framework-shipper**
 
-**Design Quality:**
-- architecture-reviewer, data-model-reviewer, security-architect
+### Framework Reviewers (3) — Used in Maintain mode only
+- **framework-consistency-reviewer**, **backward-compatibility-reviewer**, **adoption-readiness-reviewer**
 
-**Quality Attributes:**
-- test-strategy-reviewer, performance-reviewer, observability-architect
-
-**Operational:**
-- api-contract-reviewer, infrastructure-reviewer, monitoring-reviewer, tech-debt-reviewer
-
-**Documentation:**
-- docquality-reviewer
-
-**Permanent (Every Phase):**
-- security-reviewer ★ (secret scan + design review)
-
-### Executor
+### Executor & Initializer (2)
 - **git-author** — Handles commits/PRs (only after security approval)
+- **project-initializer** — Bootstraps new projects from the framework template
 
 ---
 
@@ -179,23 +169,23 @@ The framework is generic. For your project:
 - **Override exit criteria** (edit phase CLAUDE.md)
 - **Customize templates** (templates in each phase folder are starting points)
 
-See CLAUDE.md § "Development Guidelines" for how.
+See `.claude/docs/use-mode.md` (for project-level changes) or `.claude/docs/maintain-mode.md` (for framework-level changes).
 
 ---
 
 ## Common Questions
 
 **Q: How do I start a brand new project?**
-A: Copy acc-governance/ → Open CLAUDE.md → Follow "Welcome, PM" section → It will ask for project name + domain.
+A: Copy acc-governance/ → run `claude` → Claude detects `framework.json` and enters Framework Mode → choose "Use" → it will walk you through initialization.
 
 **Q: What if I'm already mid-project?**
-A: Read CLAUDE.md, read latest PROGRESS.md entry, read your work-list.json, follow 8-step PM loop starting at "Pick One Item".
+A: Run `claude` → Claude detects the mode automatically → reads `PROGRESS.md` and `work-list.json` → reports current phase and next pending item.
 
 **Q: How do I add a new phase?**
 A: Create 0X-name/CLAUDE.md (exit criteria, deliverables, reviewers) + create producer agent + update orchestration-protocol.md.
 
 **Q: My agent found a bug in the framework itself?**
-A: Use governance-framework-improvement/ parallel pipeline to propose + test + ship improvements.
+A: Run `claude` → choose "Maintain" → use the `.claude/governance-improvement/` pipeline to propose, spec, build, validate, and ship the fix.
 
 ---
 
