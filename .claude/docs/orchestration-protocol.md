@@ -6,7 +6,7 @@ The PM (main Claude session) orchestrates agents through a **producer → review
 
 ## Core Principles
 
-**State lives in files, not agents.** Workers are stateless (each Agent spawn is a clean slate); PM is also fresh each session. Both reconstruct context by reading: `work-list.json`, `PROGRESS.md`, phase docs, `GLOSSARY.md`, `CLAUDE.md`.
+**State lives in files, not agents.** Workers are stateless (each Agent spawn is a clean slate); PM is also fresh each session. Both reconstruct context by reading: `work-list.json`, `PROGRESS.md`, phase docs, `GLOSSARY.md`, `CLAUDE.md`, and `.claude/memory/` (cross-session knowledge).
 
 **Files are the handoff mechanism.** Agent output only persists if written to disk. PM briefs agents with docs to read and files to produce; agents reconstruct all context from files, write output, and return. No agent remembers anything from a prior run.
 
@@ -14,6 +14,9 @@ The PM (main Claude session) orchestrates agents through a **producer → review
 - `work-list.json` — forward-looking backlog (status, verification criteria, evidence)
 - `PROGRESS.md` — backward-looking log (who did what, evidence, blockers, next steps); **agents may create this file if missing, following the PROGRESS.md template**
 - `logs/<item-id>.md` — session log (gitignored, local only; captures agent outputs, reviewer verdicts, human approvals)
+
+**Memory system (optional enhancement):**
+- `.claude/memory/` — cross-session cache of institutional knowledge (PM-curated, see `.claude/memory/README.md`)
 
 ---
 
@@ -796,6 +799,10 @@ If any artifacts were deleted, add to PROGRESS.md:
 - `work-list.json` (current backlog, active item, verification criteria)
 - Latest `PROGRESS.md` entries (context from prior runs)
 - Current phase's `CLAUDE.md` (scope, exit criteria, doc templates)
+- `.claude/memory/` (if exists) — read relevant memory files for cross-session context:
+  - `memory/project/rejection-log.md` — if current item was previously reopened
+  - `memory/agents/reviewer-calibration.md` — common reviewer patterns for this phase
+  - `memory/agents/producer-briefs.md` — effective briefing patterns
 
 Confirm: What phase are we in? What's the active task?
 
@@ -828,6 +835,10 @@ Spawn the agent with:
 - Verification criteria (what "done" means)
 - Docs to read (phase CLAUDE.md, related context)
 - Hard limits (no commits, no deletes, stay in your phase)
+- **Memory context (if relevant):**
+  - If item was previously reopened: include snippet from `memory/project/rejection-log.md`
+  - If reviewer patterns exist for this phase: include relevant section from `memory/agents/reviewer-calibration.md`
+  - If effective brief pattern exists: follow guidance from `memory/agents/producer-briefs.md`
 
 **Agent executes.** When done, agent returns a **JSON summary** (see `.claude/agents/output-format.md`):
 ```json
@@ -933,7 +944,13 @@ On Accept:
    **Ready for:** next phase pickup
    ```
 
-5. **Surface next candidate item:**
+5. **Extract insights to memory (if threshold met):**
+   - **Reviewer patterns (>2 occurrences):** Add to `memory/agents/reviewer-calibration.md`
+   - **Item reopened:** Add to `memory/project/rejection-log.md` with reason + prior approach
+   - **Owner override:** If approved despite blocker, add to `memory/decisions/judgment-overrides.md`
+   - **Domain pattern:** If business logic emerged, add to `memory/project/domain-insights.md`
+
+6. **Surface next candidate item:**
    - Re-read `work-list.json`
    - Suggest the next highest-priority `not_started` item
    - If user has a different preference, take it
