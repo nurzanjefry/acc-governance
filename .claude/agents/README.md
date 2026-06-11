@@ -2,7 +2,7 @@
 
 Custom subagents that drive a **producer → review → fix** loop, scoped to the phase you're working in. The main Claude session (PM) orchestrates: it runs producers, fans outputs to reviewers in parallel, synthesizes findings, applies fixes, and asks you to approve.
 
-**Supports any project.** This is a reusable framework with 22 agents (5 producers + 15 reviewers + 1 executor + 1 project initializer).
+**Supports any project.** This is a reusable framework with 30 agents: 5 project producers + 5 framework producers + 15 project reviewers + 3 framework reviewers + 1 executor (`git-author`) + 1 project initializer.
 
 ---
 
@@ -15,6 +15,7 @@ Custom subagents that drive a **producer → review → fix** loop, scoped to th
 
 **For the PM (main session):**
 - [Orchestration protocol](../docs/orchestration-protocol.md) — the 8-step loop (orient → pick → brief → review → revise → score → gate → close out)
+- [Evaluator rubric](../docs/evaluator-rubric.md) — scorecard PM fills at Step 7 before Owner decides
 
 ---
 
@@ -67,11 +68,10 @@ Custom subagents that drive a **producer → review → fix** loop, scoped to th
 | Phase | Reviewers |
 |---|---|
 | 1 Define | security ★, terminology ✓, scope ✓, docquality ✓, decisions ◦ |
-| 2 Document | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, api-contract ✓, terminology ✓, scope ✓, architecture ✓, docquality ✓, decisions ✓ |
-| 3 Build | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, tech-debt ✓, api-contract ✓, performance ✓, architecture ✓, code ✓, terminology ✓, scope ✓, docquality ✓, decisions ✓ |
-| 4 Finance | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, tech-debt ✓, architecture ✓, terminology ✓, scope ✓, docquality ✓, decisions ✓ |
-| 5 Test & ship | security ★, security-architect ✓, data-model ◦ (test fixtures), test-strategy ✓, observability ✓, tech-debt ✓, infrastructure ✓, monitoring ✓, performance ✓, scope ✓ (PWA), docquality ✓, decisions ◦ |
-| 6+ Maintenance | security ★, observability ✓, tech-debt ✓ (monthly), api-contract ✓, infrastructure ✓, monitoring ✓, performance ✓ |
+| 2 Spec | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, api-contract ✓, terminology ✓, scope ✓, architecture ✓, docquality ✓, decisions ✓ |
+| 3 Build | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, tech-debt ✓, api-contract ✓, performance ✓, architecture ✓, terminology ✓, scope ✓, docquality ✓, decisions ✓ |
+| 4 Reconciliation | security ★, security-architect ✓, data-model ✓, test-strategy ✓, observability ✓, tech-debt ✓, architecture ✓, terminology ✓, scope ✓, docquality ✓, decisions ✓ |
+| 5 Test & Ship | security ★, security-architect ✓, data-model ◦ (test fixtures), test-strategy ✓, observability ✓, tech-debt ✓, infrastructure ✓, monitoring ✓, performance ✓, scope ✓, docquality ✓, decisions ◦ |
 
 Legend: ✓ = always, ◦ = if a decision was made or applies, ★ = permanent
 
@@ -81,8 +81,10 @@ Legend: ✓ = always, ◦ = if a decision was made or applies, ★ = permanent
 
 **Agents:**
 - Return a JSON summary when done (see `output-format.md`)
-- Stay within your phase folder (except appending to PROGRESS.md, adding to GLOSSARY.md, updating your work-list items)
-- Never delete files, edit outside your phase, commit, or run destructive shell commands without approval
+- Write only within your assigned phase folder — no exceptions
+- Declare reference updates in `references_to_update` (JSON field) — PM writes to all shared files
+- Never write to `PROGRESS.md`, `work-list.json`, `GLOSSARY.md`, or any `.claude/docs/` file directly
+- Never delete files, commit, or run destructive shell commands without PM approval
 
 **PM:**
 - Follow the 8-step loop in `orchestration-protocol.md`
@@ -120,6 +122,26 @@ See `../docs/guardrails_git.md` for commit message format and branch naming.
 A tracked git hook (`.githooks/pre-commit`) runs on every commit and blocks high-confidence credential patterns. Enable once per clone: `git config core.hooksPath .githooks`.
 
 The `security-reviewer` agent is the deeper, design-aware layer above the hook.
+
+---
+
+## Project Agents
+
+Every project may define its own agents in addition to the 30 framework agents above. Three rules apply unconditionally:
+
+**Priority — Framework agents win.**
+The 30 framework agents always take precedence. If a project agent shares a name with a framework agent, the framework agent is used. A naming collision is a project misconfiguration — rename the project agent.
+
+**Naming — Prefix with project slug.**
+All project agents must follow `[project-slug]-[role]`. Examples: `acme-payment-reviewer`, `fintech-fraud-checker`, `shop-inventory-spec-author`. Never reuse a framework agent name (see the Roles table above for the full list of reserved names).
+
+**Isolation — Project folder only.**
+Project agents write only within their project folder. They may read framework docs and the project's state files. They may not write to:
+- The framework's `.claude/` directory
+- Any file outside their project root
+- Other project folders (in multi-project repos)
+
+Violation of any isolation rule → PM stops the agent immediately and escalates to Owner.
 
 ---
 

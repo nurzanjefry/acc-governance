@@ -42,6 +42,15 @@ PM writes a BEFORE record to `logs/<item-id>.md` before dispatching you. You wri
 **Orphan detection: PM checks for abandoned tasks at session start.**
 PM scans `work-list.json` for items with `status: in_progress` that have a BEFORE record but no AFTER record in `logs/<item-id>.md`. These are orphaned tasks. PM reports them to Owner before doing any other work in the session.
 
+**Project agents: naming, priority, and isolation.**
+Projects may define their own agents alongside the 30 framework agents. Three rules:
+
+1. **Priority:** Framework agents always win. If a project agent has the same name as a framework agent, the framework agent is used. A naming collision is a project misconfiguration — fix it by renaming the project agent.
+2. **Naming:** Project agents must be prefixed with the project slug: `[project-slug]-[role]`. Examples: `acme-payment-reviewer`, `fintech-fraud-checker`. Never reuse a framework agent name.
+3. **Isolation:** Project agents write only within their project folder. They may read framework docs and the project's state files. They may not write to the framework's `.claude/` directory, other project folders, or shared framework state files outside their project root.
+
+Violation of any isolation rule → PM stops the agent immediately and reports to Owner.
+
 **Artifact Cleanup: Creator/Owner Model.**
 Temporary artifacts (debug logs, test outputs, session logs, scratch files) are your responsibility to clean up. If you cannot delete them (e.g., agent crashed, external service log, permission issue), declare them in your JSON summary's `artifacts_created` array (set `cleanup_status: "pending_cleanup"`) so PM can clean them up. See `.claude/agents/output-format.md` for schema. PM also runs a safety-net cleanup at session start to remove orphaned artifacts >2 hours old. **Golden rule:** Delete what you create; if you can't, declare it.
 
@@ -90,9 +99,9 @@ Temporary artifacts (debug logs, test outputs, session logs, scratch files) are 
 | `04-reconciliation/` | reconciliation-author | All | Only 04-reconciliation/ |
 | `05-test-ship/` | ship-author | All | Only 05-test-ship/ |
 | `decisions/` | All (read) | All | Only when creating new ADR |
-| `GLOSSARY.md` | All (read) | All | Only adding new terms |
-| `PROGRESS.md` | All (read) | All | Appending your entry |
-| `work-list.json` | All (read) | All | Updating your own items |
+| `GLOSSARY.md` | PM only | All | Never — declare new terms in JSON, PM writes |
+| `PROGRESS.md` | PM only | All | Never — PM writes after collecting agent JSON |
+| `work-list.json` | PM only | All | Never — PM updates status after gate decisions |
 | `.claude/docs/` | PM only | All | Never — read-only for agents |
 | `.claude/agents/` | PM only | All | Only with Owner approval |
 | `framework.json` | PM only | All | Never — framework repo identity |
