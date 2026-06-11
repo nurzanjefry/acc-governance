@@ -20,7 +20,7 @@ Records cases where Owner approved work despite blocker/major findings from revi
 **Reviewer concern**: [What reviewer flagged]
 **Owner rationale**: [Why Owner accepted risk]
 **Outcome**: [What happened in next phase — regression or validated decision]
-**References**: [[PROGRESS.md entry]], [[logs/item-id.md]]
+**References**: PROGRESS.md entry, logs/spec-001.md (local session log)
 ```
 
 ---

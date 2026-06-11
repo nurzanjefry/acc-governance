@@ -21,8 +21,8 @@ When an item is reopened (rejected after initial completion), log the reason her
 **Reason**: [Why Owner rejected]
 **Prior approach**: [What agent tried]
 **New approach**: [What to do differently]
-**DECISION link**: [[logs/item-id.md]] (local session log)
-**References**: [[PROGRESS.md entry]]
+**DECISION link**: logs/spec-001.md (local session log, gitignored)
+**References**: PROGRESS.md entry
 ```
 
 ---

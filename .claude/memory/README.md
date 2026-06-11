@@ -41,7 +41,7 @@ The `.claude/memory/` directory captures reusable cross-session knowledge that h
 Each memory file uses:
 - **Frontmatter** (YAML) — metadata
 - **Content** — insights organized by topic
-- **Cross-links** — `[[file-references]]` to ADRs, PROGRESS.md
+- **Cross-links** — References to ADRs, PROGRESS.md using standard markdown `[text](path)` format
 
 **Template:**
 ```markdown
@@ -54,7 +54,7 @@ last_updated: 2026-06-11
 
 ## [reviewer-name] patterns
 - **Pattern name**: Description
-- **References**: [[decisions/adr-xxx.md]]
+- **References**: [ADR-003](../../decisions/adr-003-multi-tenancy.md)
 ```
 
 ---

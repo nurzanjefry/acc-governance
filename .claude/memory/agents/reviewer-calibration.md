@@ -19,7 +19,7 @@ Patterns discovered by reviewers across multiple phases. Helps producers anticip
 **Pattern**: [Pattern name]
 **Frequency**: [How often this appears]
 **Fix**: [Standard resolution]
-**References**: [[decisions/adr-xxx.md]]
+**References**: [ADR-003](../../decisions/adr-003-multi-tenancy.md)
 ```
 
 ---
