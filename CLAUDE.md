@@ -113,6 +113,23 @@ See `.claude/docs/ROLES.md` for formal role definitions.
 
 ---
 
+## Git & Branch Rules
+
+`master` branch is protected on GitHub. These rules are enforced server-side and cannot be bypassed:
+
+| Rule | Effect |
+|------|--------|
+| No direct push to master | All changes must go through a PR |
+| 1 approval required | PR must be approved before merge |
+| Force-push blocked | `git push --force` on master is rejected |
+| Branch deletion blocked | `master` cannot be deleted |
+
+**PM must never attempt to push directly to master or merge PRs via CLI.** Always: feature branch → PR → Owner approves on GitHub → Owner merges.
+
+See `.claude/docs/git-workflow-protocol.md` for the full branch/commit/PR workflow.
+
+---
+
 ## Troubleshooting
 
 | Issue | See |
