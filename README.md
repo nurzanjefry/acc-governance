@@ -54,22 +54,50 @@ If you want higher output quality on complex producer tasks (e.g., writing a det
 
 ## Quick Start
 
-**1. Clone the framework:**
+**1. Clone and open:**
 ```bash
 git clone https://github.com/nurzanjefry/acc-governance.git my-project
 cd my-project
-```
-
-**2. Open Claude Code:**
-```bash
 claude
 ```
-Claude Code detects `framework.json`, enters Framework Mode, and asks: **Use** (start/continue a project) or **Maintain** (improve the framework). Choose **Use** for a new project — it will walk you through initialization and populate `work-list.json` and `GLOSSARY.md` for you.
 
-**3. (Optional) Customise before initializing:**
-- `GLOSSARY.md` — add your domain terminology
-- `work-list.json` — define your deliverables manually
-- Phase `CLAUDE.md` files — override exit criteria
+**2. PM greets you:**
+```
+PM: I see framework.json. What would you like to do?
+    1. Use — create or continue a project
+    2. Maintain — improve the framework itself
+```
+**You:** `Use`
+
+**3. PM asks what to build:**
+```
+PM: What are you building?
+```
+**You:** `A PWA for in-store food ordering with receipt reconciliation`
+
+**4. PM initializes:**
+- Runs `project-initializer` → creates `work-list.json` + `GLOSSARY.md`
+- Shows generated backlog (Define → Spec → Build → Reconciliation → Test/Ship)
+
+**5. PM starts working:**
+```
+PM: Ready to start Phase 1 (Define)? I'll dispatch define-author.
+```
+**You:** `Yes` or `Go ahead`
+
+**6. PM orchestrates:**
+- Dispatches agent → produces deliverable
+- Runs reviewers → flags issues
+- Synthesizes findings → presents to you
+```
+PM: All reviewers PASS. Approve?
+```
+**You:** `Approve` or `Request changes: [feedback]`
+
+**7. Repeat:**
+PM loops through backlog. You approve at each gate. PRs auto-created → you merge on GitHub.
+
+**That's it.** PM handles orchestration, agents do the work, you make decisions.
 
 ---
 
