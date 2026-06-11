@@ -44,36 +44,32 @@ You stay in control. The PM never merges code, never spends your approval on som
 - **Git** — For version control
 - **Text editor** — For reading/editing project files
 
-**Which Claude model do you need?**
+### Which Claude model do you need?
+
 **Claude Haiku is enough.** The framework is designed so Haiku handles all 30 agents efficiently — it's fast, cheap, and produces good output for structured tasks like reviewing and writing specs. You don't need Sonnet or Opus to use this. The main Claude Code session (your PM) also runs fine on Haiku.
 
-> If you want higher output quality on complex producer tasks (e.g., writing a detailed data model), switch the PM session to Sonnet. But start with Haiku — it's sufficient for most projects.
+If you want higher output quality on complex producer tasks (e.g., writing a detailed data model), switch the PM session to Sonnet. But start with Haiku — it's sufficient for most projects.
 
 ---
 
 ## Quick Start
 
-**1. Copy the framework:**
+**1. Clone the framework:**
 ```bash
-git clone <repo-url> my-project
+git clone https://github.com/nurzanjefry/acc-governance.git my-project
 cd my-project
 ```
 
-**2. Read CLAUDE.md** (explains PM role + how to set up):
-```bash
-# Open CLAUDE.md — it has full startup instructions
-```
-
-**3. Update project files for your domain:**
-- `GLOSSARY.md` — Add your domain terminology
-- `work-list.json` — Define your deliverables (or let project-init populate it)
-- Phase `CLAUDE.md` files — Customize exit criteria if needed
-
-**4. Open in Claude Code:**
+**2. Open Claude Code:**
 ```bash
 claude
 ```
-Claude Code is your PM. It will detect `framework.json`, greet you as framework maintainer, and ask whether you want to Use or Maintain the framework. Follow its prompts — CLAUDE.md drives the startup flow.
+Claude Code detects `framework.json`, enters Framework Mode, and asks: **Use** (start/continue a project) or **Maintain** (improve the framework). Choose **Use** for a new project — it will walk you through initialization and populate `work-list.json` and `GLOSSARY.md` for you.
+
+**3. (Optional) Customise before initializing:**
+- `GLOSSARY.md` — add your domain terminology
+- `work-list.json` — define your deliverables manually
+- Phase `CLAUDE.md` files — override exit criteria
 
 ---
 
@@ -107,13 +103,13 @@ acc-governance/
 ├── 04-reconciliation/ — Domain logic validation (if needed)
 ├── 05-test-ship/ — Testing & deployment (test plan, tracking, runbooks)
 ├── decisions/ — ADR templates and architectural decision records
-├── .claude/ — Agents (22 total), protocols, configurations
-│   ├── agents/ — 10 producers + 18 reviewers + 1 executor + 1 initializer (30 total)
+├── .claude/ — Agents (30 total), protocols, configurations
+│   ├── agents/ — 5 project producers + 5 framework producers + 15 project reviewers + 3 framework reviewers + 1 executor + 1 initializer
 │   └── docs/ — Orchestration protocol, rules, guardrails, runbooks
 ├── CLAUDE.md — Developer guidance for working with this framework
 ├── GLOSSARY.md — TEMPLATE: define your domain terms here
 ├── work-list.json — TEMPLATE: project backlog and deliverables
-├── PROGRESS.md — TEMPLATE: audit log of agent executions
+├── PROGRESS.md — Audit log of agent executions (append-only; created on first use)
 └── README.md — This file
 ```
 
@@ -155,7 +151,7 @@ acc-governance/
 7. **Score & gate** — Rubric: 6 dimensions, 0–2 scoring, max 12 points
 8. **Close out** — Mark item passing, log to PROGRESS.md
 
-See `.claude/docs/orchestration-protocol.md` for full details.
+See the Documentation section below for full details.
 
 ---
 
@@ -192,7 +188,7 @@ See `.claude/docs/use-mode.md` (for project-level changes) or `.claude/docs/main
 ## Common Questions
 
 **Q: How do I start a brand new project?**
-A: Copy acc-governance/ → run `claude` → Claude detects `framework.json` and enters Framework Mode → choose "Use" → it will walk you through initialization.
+A: `git clone` the repo → run `claude` → Claude detects `framework.json` and enters Framework Mode → choose "Use" → it will walk you through initialization.
 
 **Q: What if I'm already mid-project?**
 A: Run `claude` → Claude detects the mode automatically → reads `PROGRESS.md` and `work-list.json` → reports current phase and next pending item.
