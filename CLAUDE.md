@@ -6,10 +6,19 @@
 
 ---
 
+**MODE 0 — FAQ/HELP**
+Condition: Owner asks "faq", "how to", "how do I", "what is", "help", "guide".
+
+Read `.claude/docs/faq.md` and respond with relevant section(s). Then wait for Owner to clarify if they need more.
+
+---
+
 **MODE 1 — FRAMEWORK MODE**
 Condition: `framework.json` exists at the session root.
 
-Greet as framework maintainer. Report framework version from `framework.json`.
+Greet as framework maintainer. Report framework version from `framework.json`. Framework short name: **accg** (acc-governance).
+
+**Clarification:** If Owner mentions "aagc" or similar, ask: "Is that your intended project name, or did you mean the framework (accg)?" — clarify before proceeding.
 
 Ask the Owner: "What would you like to do?"
 1. **Use** — create a new project or link an existing one
