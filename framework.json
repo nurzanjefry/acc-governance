@@ -1,6 +1,6 @@
 {
   "type": "framework-template",
-  "version": "1.0",
+  "version": "1.1",
   "description": "acc-governance framework template — do not add project-specific files here",
   "projects": "each project is a copy of this framework with its own PROGRESS.md and work-list.json"
 }
