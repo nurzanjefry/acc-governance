@@ -4,6 +4,8 @@ Custom subagents that drive a **producer → review → fix** loop, scoped to th
 
 **Supports any project.** This is a reusable framework with 30 agents: 5 project producers + 5 framework producers + 15 project reviewers + 3 framework reviewers + 1 executor (`git-author`) + 1 project initializer.
 
+**The roster is MECE — Mutually Exclusive, Collectively Exhaustive.** Each agent owns one distinct concern; no two agents overlap. Together they cover every review dimension. Before adding any agent — framework or project — run the ME + CE check. See `decisions/adr-006-mece-agent-design.md` and the decision protocol in `maintain-mode.md` (framework agents) or `use-mode.md` (project agents).
+
 ---
 
 ## Quick Links

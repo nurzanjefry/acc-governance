@@ -72,12 +72,43 @@ Present the report. Stop. Wait for Owner instruction.
 
 ---
 
-## Adding or Modifying an Agent
+## When You Need a New Framework Agent
+
+A new framework agent requires passing a MECE check before anything is written. See `decisions/adr-006-mece-agent-design.md` for the full principle.
+
+**Step 1 — ME check (Mutually Exclusive).**
+Name the concern precisely: "This agent reviews ___."
+Scan the Reviewer Matrix in `.claude/agents/README.md`. Does any existing agent already cover this concern, even partially?
+- **Yes** → stop. Adjust the PM brief to use the existing agent. No new agent needed.
+- **No** → proceed.
+
+**Step 2 — Determine scope.**
+Is this gap universal — would every project using acc-governance hit it?
+- **Yes** → framework agent. Continue to Step 3.
+- **No** → project-specific agent. See use-mode.md "When You Need a New Project Agent".
+
+**Step 3 — CE check (Collectively Exhaustive).**
+Has this concern caused a missed issue in a real work item? Document the evidence (which project, which work item, what slipped through).
+- **No evidence** → defer. Add to `decisions/` as a proposed gap with `Status: Proposed`. Revisit when evidence exists.
+- **Evidence exists** → proceed.
+
+**Step 4 — Run the governance-improvement pipeline.**
+A new framework agent is a structural change. It requires:
+1. ADR in `decisions/` — what concern, why no existing agent covers it, evidence of the gap
+2. Start at Phase 1 (`framework-definer`) with the problem statement
+3. Reviewers: framework-consistency, backward-compatibility, adoption-readiness, security
+4. Increment `framework.json` version on merge
+
+---
+
+## Adding or Modifying an Agent (Mechanics)
+
+Once the "When You Need a New Agent" check passes:
 
 1. Read existing agent definition (if modifying) or find a similar agent as reference
 2. Draft the new/modified agent in `.claude/agents/[name].md`
 3. Test against a real work-list item before committing
-4. Update `.claude/agents/README.md` matrix
+4. Update `.claude/agents/README.md` Reviewer Matrix — verify ME still holds after the addition
 5. Run security-reviewer on the agent definition
 6. Log in `PROGRESS.md`
 

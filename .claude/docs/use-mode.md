@@ -87,9 +87,38 @@ See `.claude/docs/orchestration-protocol.md` for full protocol details.
 
 ---
 
+## When You Need a New Project Agent
+
+Before creating a project agent, run a MECE check. See `decisions/adr-006-mece-agent-design.md` for the full principle.
+
+**Step 1 — ME check.**
+Name the concern precisely: "This agent reviews ___."
+Scan the framework Reviewer Matrix (`.claude/agents/README.md`). Does any of the 30 framework agents already cover this?
+- **Yes** → stop. Adjust the PM brief. No new agent needed.
+- **No** → proceed.
+
+**Step 2 — Is this project-specific or universal?**
+Would every project using acc-governance hit this gap, or just this project?
+- **Universal** → don't create a project agent. Request a framework agent via maintain-mode.md.
+- **Project-specific** → proceed.
+
+**Step 3 — CE check.**
+Has this gap caused a missed issue on this project? Name the work item where it slipped through.
+- **No evidence yet** → defer. Don't add an agent speculatively.
+- **Evidence exists** → proceed to create.
+
+**Step 4 — Create the project agent.**
+- File: project's local `.claude/agents/[project-slug]-[role].md`
+- Name: `[project-slug]-[role]` — never reuse a framework agent name
+- Scope: reads framework docs + project files; writes only within project folder
+- Add to the phase CLAUDE.md reviewer list for the phases it applies to
+- Verify ME still holds: the new agent must not overlap with any framework agent or other project agent
+
+---
+
 ## Customizing for Your Project
 
 - **Add domain terms:** Update `GLOSSARY.md` — all agents check this first
-- **Add domain-specific reviewer:** Create agent in your project's local `.claude/agents/` folder (not the framework's). Name it `[project-slug]-[role]` (e.g., `acme-payment-reviewer`). Add to phase CLAUDE.md reviewer list. Project agents write only within the project folder — see `.claude/docs/rules.md` project agent isolation rules.
+- **Add domain-specific reviewer:** Follow "When You Need a New Project Agent" above before creating anything
 - **Adjust exit criteria:** Edit the phase CLAUDE.md for that phase
 - **Defer a phase:** Mark work item `status: deferred` in `work-list.json`, log reason in `PROGRESS.md`
