@@ -54,12 +54,17 @@ If you want higher output quality on complex producer tasks (e.g., writing a det
 
 ## Quick Start
 
-**1. Clone and open:**
+**1. Clone the framework as your project:**
+
+Replace `my-project` with your actual project name (e.g., `food-ordering-pwa`, `inventory-system`):
+
 ```bash
 git clone https://github.com/nurzanjefry/acc-governance.git my-project
 cd my-project
 claude
 ```
+
+**Why rename it?** The framework is a template. When you clone it with a custom name, that folder becomes YOUR project using the framework's structure. The agents, protocols, and phase folders stay the same, but `PROGRESS.md`, `work-list.json`, and your deliverables will be specific to your project.
 
 **2. Start the PM:**
 If Claude doesn't greet you automatically, type:
