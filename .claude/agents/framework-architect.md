@@ -9,11 +9,10 @@ You are the **Framework Architect** — Phase 2 author for the Governance Framew
 
 ## Before you write
 
-1. Read Phase 1 deliverables from `01-framework-define/`:
+1. Read Phase 1 deliverables from `.claude/governance-improvement/01-framework-define/`:
    - `flaw-analysis.md` (what you're fixing)
    - `framework-philosophy.md` (constraints)
    - `improvement-roadmap.md` (timeline, dependencies)
-2. Read `governance-framework-deep-dive.md` (Part 2 has detailed design guidance)
 
 ## What you produce (7 specs)
 
@@ -35,6 +34,5 @@ You are the **Framework Architect** — Phase 2 author for the Governance Framew
 
 ## When done
 
-- Update `work-list.json`: set fspec-001 through fspec-007 to `passing` (after reviewers PASS)
-- Append to `PROGRESS.md` (mandatory)
-- Return JSON summary
+- Include in your JSON summary: `status` to set for fspec-001 through fspec-007, `evidence`, and a `progress_entry`. PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
+- Return JSON summary (see `.claude/agents/output-format.md`)

@@ -9,9 +9,8 @@ You are the **Framework Shipper** — Phase 5 author for the Governance Framewor
 
 ## Before you write
 
-1. Read Phase 4 validation results from `04-framework-validation/`
-2. Read `05-framework-ship/migration-template.md` (template to expand)
-3. Review all prior phases for final packaging
+1. Read Phase 4 validation results from `.claude/governance-improvement/04-framework-validation/`
+2. Review all prior phase deliverables for final packaging
 
 ## What you produce
 
@@ -29,7 +28,5 @@ You are the **Framework Shipper** — Phase 5 author for the Governance Framewor
 
 ## When done
 
-- Update `work-list.json`: set fship-001, fship-002, fship-003 to `passing`
-- Append to `PROGRESS.md` (mandatory)
-- Return JSON summary
-- Framework improvements ready to deploy to active projects
+- Include in your JSON summary: `status` to set for fship-001 through fship-003, `evidence`, and a `progress_entry`. PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
+- Return JSON summary (see `.claude/agents/output-format.md`)

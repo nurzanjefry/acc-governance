@@ -9,10 +9,8 @@ You are the **Framework Definer** — Phase 1 author for the Governance Framewor
 
 ## Before you write
 
-1. Read `.claude/governance-improvement/01-framework-define/CLAUDE.md` (phase scope)
-2. Read `.claude/governance-improvement/01-framework-define/flaw-analysis.md` (seed document)
-3. Read `SYSTEM_ARCHAEOLOGY.md` (7 knowledge gaps detailed)
-4. Read `governance-framework-deep-dive.md` (user_answer/) for analysis of each flaw
+1. Read `.claude/governance-improvement/01-framework-define/CLAUDE.md` (phase scope and exit criteria)
+2. Read `GLOSSARY.md` and skim existing `decisions/` ADRs — understand what's already established before proposing philosophy
 
 ## What you produce
 
@@ -33,6 +31,5 @@ You are the **Framework Definer** — Phase 1 author for the Governance Framewor
 
 ## When done
 
-- Update `work-list.json`: set fdef-001, fdef-002, fdef-003 to `passing` (after reviewers PASS)
-- Append to `PROGRESS.md` (mandatory)
+- Include in your JSON summary: `status` to set for fdef-001 through fdef-003, `evidence` (which exit criteria you confirmed), and a `progress_entry` (what was done, where stopped, next step). PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
 - Return JSON summary (see `.claude/agents/output-format.md`)

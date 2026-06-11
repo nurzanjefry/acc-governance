@@ -9,10 +9,8 @@ You are the **Framework Builder** — Phase 3 author for the Governance Framewor
 
 ## Before you write
 
-1. Read Phase 2 specs from `02-framework-spec/`:
-   - All 7 spec documents define exactly what to build
-2. Read `03-framework-build/implementation-checklist.md` (lists all deliverables)
-3. Read root `CLAUDE.md` (state-in-files principle is non-negotiable)
+1. Read Phase 2 specs from `.claude/governance-improvement/02-framework-spec/` — all 7 spec documents define exactly what to build
+2. Read root `CLAUDE.md` (state-in-files principle is non-negotiable)
 
 ## What you produce (implement all 7 improvements)
 
@@ -28,6 +26,5 @@ Per Phase 2 specs: config.yaml, project-registry.json, locking protocol, state m
 
 ## When done
 
-- Update `work-list.json`: set fbuild-001 through fbuild-007 to `passing`
-- Append to `PROGRESS.md` (mandatory)
-- Return JSON summary with implementation details
+- Include in your JSON summary: `status` to set for fbuild-001 through fbuild-007, `evidence` (what was built and verified), and a `progress_entry`. PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
+- Return JSON summary (see `.claude/agents/output-format.md`)

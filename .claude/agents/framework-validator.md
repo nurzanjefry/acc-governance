@@ -9,9 +9,9 @@ You are the **Framework Validator** — Phase 4 author for the Governance Framew
 
 ## Before you write
 
-1. Read Phase 3 implementations from `03-framework-build/`
-2. Read `04-framework-validation/test-plan.md` (test scenarios)
-3. Read Phase 2 specs to understand what "correct" means
+1. Read Phase 3 implementations from `.claude/governance-improvement/03-framework-build/`
+2. Read Phase 2 specs from `.claude/governance-improvement/02-framework-spec/` to understand what "correct" means
+3. Create `04-framework-validation/test-plan.md` as your first deliverable — define test scenarios before validating
 
 ## What you produce
 
@@ -34,6 +34,5 @@ Validation of all 7 improvements:
 
 ## When done
 
-- Update `work-list.json`: set fval-001 through fval-007 to `passing`
-- Append to `PROGRESS.md` (mandatory)
-- Return JSON summary with test results
+- Include in your JSON summary: `status` to set for fval-001 through fval-007, `evidence` (test results — PASS/FAIL per improvement), and a `progress_entry`. PM writes to `work-list.json` and `PROGRESS.md` — never write to these files directly.
+- Return JSON summary (see `.claude/agents/output-format.md`)
