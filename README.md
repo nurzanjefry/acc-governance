@@ -1,21 +1,22 @@
-# acc-governance (Agent Control Center Governance)
+# acc-governance
 
-**A fully-agentic, deterministic project management framework for end-to-end product creation, development, and orchestration through 5 phases: Define → Spec → Build → Reconciliation → Test & Ship.**
+**A framework that turns Claude Code into your AI project manager.**
+
+You describe what you want to build. Claude Code runs a team of 30 AI agents — writers, reviewers, and a git executor — to produce specs, code, and decisions across 5 phases. At every key decision, it stops and asks for your approval before moving on.
+
+Everything is tracked in plain files committed to git, so the project is always resumable, auditable, and yours.
 
 ---
 
-## Role Definition
+## Who does what
 
-**Project Manager (PM):** Claude Code
-- Execute orchestration protocol, manage agents, synthesize findings, present to Owner
+| Role | Who | What they do |
+|------|-----|--------------|
+| **You (Owner)** | Human | Describe what to build, approve work, make calls when agents disagree |
+| **PM** | Claude Code | Runs the agents, synthesizes findings, presents decisions for your approval |
+| **Workers** | 30 AI agents | Write deliverables, review each other's work, commit to git |
 
-**Owner/Executive:** You
-- Define objectives, approve phase advancement, make strategic decisions
-
-**Workers:** 30 AI Agents
-- Execute assigned work, conduct peer review, commit to version control
-
-See `CLAUDE.md` and `.claude/docs/ROLES.md` for formal role definitions and governance structure.
+You stay in control. The PM never merges code, never spends your approval on something you haven't seen, and stops at every gate until you say go.
 
 ---
 
@@ -55,29 +56,21 @@ Claude Code is your PM. It will detect `framework.json`, greet you as framework 
 
 ## How It Works
 
-**Three-layer execution model:**
+**You define the work. The PM runs it.**
 
-| Layer | Actor | Function |
-|-------|-------|----------|
-| **Strategic** | Owner | Define objectives, approve phase advancement, authorize decisions |
-| **Operational** | Claude PM | Execute 8-step loop, manage agents, synthesize quality findings |
-| **Execution** | 30 Agents | Write deliverables, conduct peer review, commit output |
+1. You add items to `work-list.json` (or let the initializer populate it from your description)
+2. The PM picks one item at a time, sends it to the right writer agent, then fans out to up to 15 reviewer agents in parallel
+3. Reviewers flag blockers — the writer fixes them (up to 5 rounds)
+4. The PM scores the result and **stops for your approval**
+5. Once you approve, git-author commits and opens a PR — you merge on GitHub
 
-**Per work-list item, PM executes:**
-1. Orient — Read work-list.json, PROGRESS.md, phase CLAUDE.md
-2. Pick — Select one not_started item; set in_progress
-3. Choose — Route to appropriate producer agent
-4. Brief — Provide item, exit criteria, context files
-5. Review — Dispatch 15 reviewers in parallel (6 quality dimensions)
-6. Revise — Synthesize findings; brief agent for batch revision (max 5 cycles)
-7. Score & Gate — Present to Owner for approval
-8. Close Out — Mark item passing; update tracking; log to PROGRESS.md
+Repeat until the work-list is empty.
 
-**State lives in git (resumable, auditable):**
-- `work-list.json` — Backlog + item status
-- `PROGRESS.md` — Audit log of every execution
-- `decisions/adr-*.md` — Architectural decisions (why choices were made)
-- `GLOSSARY.md` — Canonical terminology
+**Nothing gets lost between sessions.** All state lives in committed files:
+- `work-list.json` — what's done, what's next, what's blocked
+- `PROGRESS.md` — full audit log of every agent run
+- `decisions/adr-*.md` — why choices were made
+- `GLOSSARY.md` — canonical terminology for your domain
 
 ---
 
