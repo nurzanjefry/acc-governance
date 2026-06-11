@@ -61,29 +61,41 @@ cd my-project
 claude
 ```
 
-**2. Choose your mode:**
-- PM asks: **Use** (start a project) or **Maintain** (improve framework)?
-- Pick **Use** for a new project
+**2. PM greets you:**
+```
+PM: I see framework.json. What would you like to do?
+    1. Use — create or continue a project
+    2. Maintain — improve the framework itself
+```
+**You:** `Use`
 
-**3. Initialize your project:**
-- PM asks: What are you building?
-- Describe your product (e.g., "a PWA for food ordering with receipt reconciliation")
-- PM runs `project-initializer` agent → creates `work-list.json` + `GLOSSARY.md`
+**3. PM asks what to build:**
+```
+PM: What are you building?
+```
+**You:** `A PWA for in-store food ordering with receipt reconciliation`
 
-**4. Review the backlog:**
-- PM shows generated work items (Define → Spec → Build → Test → Ship)
-- Approve or adjust the breakdown
+**4. PM initializes:**
+- Runs `project-initializer` → creates `work-list.json` + `GLOSSARY.md`
+- Shows generated backlog (Define → Spec → Build → Reconciliation → Test/Ship)
 
-**5. Start Phase 1:**
-- PM picks first item from `work-list.json`
-- Dispatches `define-author` → writes product definition
-- Reviewers validate (terminology, scope, decisions)
-- PM presents findings → you approve or request changes
+**5. PM starts working:**
+```
+PM: Ready to start Phase 1 (Define)? I'll dispatch define-author.
+```
+**You:** `Yes` or `Go ahead`
 
-**6. Repeat until shipped:**
-- PM loops through backlog (Step 2–8 of orchestration protocol)
-- You approve at each phase gate (Step 7)
-- PRs auto-created → you merge on GitHub
+**6. PM orchestrates:**
+- Dispatches agent → produces deliverable
+- Runs reviewers → flags issues
+- Synthesizes findings → presents to you
+```
+PM: All reviewers PASS. Approve?
+```
+**You:** `Approve` or `Request changes: [feedback]`
+
+**7. Repeat:**
+PM loops through backlog. You approve at each gate. PRs auto-created → you merge on GitHub.
 
 **That's it.** PM handles orchestration, agents do the work, you make decisions.
 
