@@ -75,15 +75,22 @@ Claude Code detects `framework.json`, enters Framework Mode, and asks: **Use** (
 
 ## How It Works
 
-**You define the work. The PM runs it.**
+**Your only two jobs: define the work, then approve it.**
 
-1. You add items to `work-list.json` (or let the initializer populate it from your description)
-2. The PM picks one item at a time, sends it to the right writer agent, then fans out to up to 15 reviewer agents in parallel
-3. Reviewers flag blockers — the writer fixes them (up to 5 rounds)
-4. The PM scores the result and **stops for your approval**
-5. Once you approve, git-author commits and opens a PR — you merge on GitHub
+| Step | Who | What happens |
+|------|-----|--------------|
+| 1. Define | You | Describe what to build — the initializer populates `work-list.json` |
+| 2. Pick | PM | Selects one item from the backlog |
+| 3. Write | Writer agent | Produces the deliverable for that item |
+| 4. Review | Up to 15 reviewer agents (parallel) | Flag blockers, majors, minors |
+| 5. Revise | Writer agent | Fixes blockers — repeated up to 5 rounds automatically |
+| 6. Score | PM | Evaluates against 6-dimension rubric, prepares summary |
+| 7. Approve | **You** | Read the summary, say yes or ask for changes |
+| 8. Ship | git-author agent | Commits, pushes branch, opens PR — no human input needed |
 
-Repeat until the work-list is empty.
+Steps 2–6 and 8 run without you. You only act at steps 1 and 7.
+
+Repeat from step 2 until the work-list is empty.
 
 **Nothing gets lost between sessions.** All state lives in committed files:
 - `work-list.json` — what's done, what's next, what's blocked
