@@ -1,6 +1,6 @@
 # Agent Rules — Working Discipline
 
-These rules apply to **all agents** and define how the TallyBite project is organized and executed.
+These rules apply to **all agents** and define how the acc-governance framework and all projects governed by it are organized and executed.
 
 ---
 
@@ -18,8 +18,29 @@ Any architectural choice or scope-affecting decision gets an ADR (Architecture D
 **Return a JSON summary when done.**
 At the end of every task, return a JSON summary for the PM. See `.claude/agents/output-format.md` for the schema. This tells the PM exactly what was written, what files changed, and whether you're ready for review. No guesswork; no redundant edits.
 
-**Log to PROGRESS.md (or let PM log it).**
-At the end of your task, append an entry to `PROGRESS.md` stating: what was done, where you stopped, exit criteria met, and next steps. If you set `updates.progress_md_logged: false` in your JSON summary, PM will log it for you.
+**Never write to PROGRESS.md directly — PM owns it.**
+Always set `updates.progress_md_logged: false` in your JSON summary. PM writes the PROGRESS.md entry after receiving your JSON. This prevents concurrent write conflicts when multiple agents run in parallel.
+
+**Doc discipline: 150-line limit.**
+No doc should exceed 150 lines without PM approval. If a doc grows beyond 150 lines, split it into focused sub-docs and link from the parent. Purpose: prevents context bloat for agents reading the file.
+
+**Context discipline: read only what your brief requires.**
+Do not pre-emptively load `use-mode.md`, `maintain-mode.md`, `framework-overview.md`, or any doc not explicitly named in your task brief. Load only the files your task requires. Purpose: keeps agent context focused.
+
+**No duplicate docs.**
+Before creating a new doc, verify the content doesn't belong in an existing one. New docs require PM approval. If in doubt, append to an existing doc instead. Purpose: prevents fragmentation and orphaned files.
+
+**Agent concurrency model: PM is the sole writer to shared files.**
+When PM dispatches multiple agents in parallel, agents write only to their assigned phase folder output files. Agents never write to shared files directly — they return JSON findings to PM. PM collects all agent JSONs first, then writes to shared files in a single sequential pass. Shared files: `PROGRESS.md`, `work-list.json`, `GLOSSARY.md`, `project-context.md`, and any reference or index file.
+
+**Reference updates belong to PM, not agents.**
+When you create an artifact, declare it in your JSON summary with a `references_to_update` list — the parent doc and location where this artifact should be linked. Do not write the reference yourself. PM executes all reference updates after collecting all agent JSONs for the work item. See `.claude/agents/output-format.md` for the `references_to_update` schema.
+
+**Agent lifecycle: every task has a BEFORE and AFTER record.**
+PM writes a BEFORE record to `logs/<item-id>.md` before dispatching you. You write your output to your phase folder. You return JSON to PM. PM writes the AFTER record. These two records are the recovery point if you error mid-task. You do not write to `logs/` — PM owns that file. See `.claude/docs/log-format.md` for the record structure.
+
+**Orphan detection: PM checks for abandoned tasks at session start.**
+PM scans `work-list.json` for items with `status: in_progress` that have a BEFORE record but no AFTER record in `logs/<item-id>.md`. These are orphaned tasks. PM reports them to Owner before doing any other work in the session.
 
 **Artifact Cleanup: Creator/Owner Model.**
 Temporary artifacts (debug logs, test outputs, session logs, scratch files) are your responsibility to clean up. If you cannot delete them (e.g., agent crashed, external service log, permission issue), declare them in your JSON summary's `artifacts_created` array (set `cleanup_status: "pending_cleanup"`) so PM can clean them up. See `.claude/agents/output-format.md` for schema. PM also runs a safety-net cleanup at session start to remove orphaned artifacts >2 hours old. **Golden rule:** Delete what you create; if you can't, declare it.
@@ -41,13 +62,14 @@ Temporary artifacts (debug logs, test outputs, session logs, scratch files) are 
 - Create & edit docs/code within your phase folder
 - Add new terms to `GLOSSARY.md`
 - Add new ADRs to `decisions/`
-- Append to `PROGRESS.md`
-- Update your own items in `work-list.json` (status, evidence)
+- Return JSON summary to PM (including `references_to_update`)
 
 ### Requires Approval ✗
 - Delete, move, or rename files
 - Overwrite existing non-empty docs
-- Edit outside your phase folder (except shared files)
+- Edit outside your phase folder
+- Write directly to any shared file (`PROGRESS.md`, `work-list.json`, `GLOSSARY.md`, `project-context.md`)
+- Write reference/index updates to any doc — declare in JSON, PM executes
 - Any git commit, push, or branch operation
 - Remove/rename GLOSSARY terms or ADRs
 - Destructive shell commands (`rm`, `git reset --hard`, etc.)
@@ -71,7 +93,12 @@ Temporary artifacts (debug logs, test outputs, session logs, scratch files) are 
 | `GLOSSARY.md` | All (read) | All | Only adding new terms |
 | `PROGRESS.md` | All (read) | All | Appending your entry |
 | `work-list.json` | All (read) | All | Updating your own items |
-| `.claude/`, root `CLAUDE.md`, `README.md` | PM only | All | Only with approval |
+| `.claude/docs/` | PM only | All | Never — read-only for agents |
+| `.claude/agents/` | PM only | All | Only with Owner approval |
+| `framework.json` | PM only | All | Never — framework repo identity |
+| `project.json` | PM (creates at init) | All | Never — PM merges on Owner approval |
+| `project-context.md` | PM (creates/updates) | All | Never — PM updates at phase transitions |
+| Root `CLAUDE.md`, `README.md` | PM only | All | Only with Owner approval |
 
 ---
 

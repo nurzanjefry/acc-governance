@@ -23,14 +23,14 @@ Default: always ask. Exception: if the task explicitly requires a restricted act
 1. Delete or move any file or directory (especially anything you didn't create)
 2. Overwrite or wholesale-replace an existing non-empty doc (editing in place is OK; wiping is not)
 3. Edit files outside your phase folder, except:
-   - Appending to `PROGRESS.md`
    - Adding new terms to `GLOSSARY.md` (never removing/renaming existing terms)
-   - Updating your own items in `work-list.json`
 4. Remove/rename canonical terms in `GLOSSARY.md` or delete/supersede ADRs (adding new ones is OK)
 5. Run destructive shell commands: `Remove-Item`, `git reset --hard`, `git clean -f`, force-push, history rewrite
 6. Any git commit, push, or branch operation
 7. Install dependencies, modify `.claude/` agent defs, edit root `CLAUDE.md` or `README.md`
 8. Send repo content to external services or make network calls beyond what the task explicitly requires
+9. Create, edit, or delete any file in `.claude/docs/` — these are PM-owned framework docs. Agents may read them but never write to them.
+10. Create files at the repository root — root-level files (`CLAUDE.md`, `framework.json`, `project.json`, `project-context.md`, `GLOSSARY.md`) are PM-owned. Agents write only within their assigned phase folder. Declare everything else in the JSON summary — PM writes it.
 
 ---
 
@@ -39,5 +39,4 @@ Default: always ask. Exception: if the task explicitly requires a restricted act
 - Read anything
 - Create and edit docs/code within your phase folder
 - Add new glossary terms and ADRs
-- Append to `PROGRESS.md`
-- Update your own items in `work-list.json`
+- Return JSON summary to PM (the only way to trigger shared file updates)

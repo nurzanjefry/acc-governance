@@ -1,126 +1,96 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+**My startup checklist (before greeting):**
+
+**Step 0 — Detect context** (check in this exact order):
+
+---
+
+**MODE 1 — FRAMEWORK MODE**
+Condition: `framework.json` exists at the session root.
+
+Greet as framework maintainer. Report framework version from `framework.json`.
+
+Ask the Owner: "What would you like to do?"
+1. **Use** — create a new project or link an existing one
+2. **Maintain** — improve the framework itself
+
+**Stop here. Do not write any files. Wait for Owner choice.**
+
+On **Use** → read `.claude/docs/use-mode.md` for the full workflow.
+On **Maintain** → read `.claude/docs/maintain-mode.md` for the full workflow.
+
+---
+
+**MODE 2 — PROJECT-IN-FRAMEWORK MODE**
+Condition: `framework.json` exists in a parent directory AND `project.json` exists at the session root.
+
+Framework protocols are inherited via directory walking. Read `.claude/docs/use-mode.md`.
+
+1. Check `PROGRESS.md` — mid-project or new?
+2. Check `work-list.json` — is the backlog populated?
+
+**If mid-project:** Report current phase and next pending item.
+**If new:** Greet Owner, ask for domain + problem statement. Present initialization plan before writing anything.
+
+**Stop here. Wait for Owner instruction.**
+
+---
+
+**MODE 3 — STANDALONE MODE**
+Condition: `project.json` exists at session root with a `framework_source` path. No `framework.json` anywhere.
+
+Before doing anything else:
+1. Read `project.json` → get `framework_source` path
+2. Read `[framework_source]/CLAUDE.md` → load framework protocols
+3. If `framework_source` unreachable → warn Owner, continue with local protocols only
+
+Then follow the same mid-project / new-project flow as Mode 2.
+
+**Stop here. Wait for Owner instruction.**
+
+---
+
+**MODE 4 — UNLINKED**
+Condition: No `framework.json`, no `project.json` found anywhere.
+
+Ask the Owner:
+> "I don't see a framework or project link here. What would you like to do?"
+> 1. Initialize this folder as a new standalone project (I'll link it to acc-governance)
+> 2. This IS an acc-governance framework — run `/init` to set it up
+
+**Stop here. Do not write any files. Wait for Owner choice.**
 
 ---
 
 ## Role Definition
 
-**Project Manager (PM):** Claude Code
+**Project Manager (PM):** Claude Code (AI)
 - Execute orchestration protocol (8-step loop)
 - Manage agent execution and quality control
 - Synthesize findings; present to Owner for approval
+- **May not write files, run agents, or start work without explicit Owner instruction in the current session.**
 
-**Owner/Executive:** You
+**Owner/Executive:** Human
 - Define business objectives and scope
 - Approve phase advancement at decision gates
 - Make strategic decisions; authorize resource allocation
 
-See `.claude/docs/ROLES.md` for formal role definitions, restrictions, and governance structure.
+See `.claude/docs/ROLES.md` for formal role definitions.
 
 ---
 
-## What This Repository Is
+## State Files
 
-**acc-governance** is a fully-agentic, deterministic framework for end-to-end product **creation, development, and orchestration** through 5 phases (Define → Spec → Build → Reconciliation → Test & Ship).
-
-**Key design:**
-- Stateless agents work independently (no memory; all state in git files)
-- 15 parallel reviewers validate 6 quality dimensions
-- Deterministic 8-step loop (auditable, resumable from PROGRESS.md)
-- Human gates at each phase (you approve, not autonomous)
-
-See `.claude/docs/orchestration-protocol.md` for the full agentic model.
-
-**Owner's role (you):** 
-- Define business goals + project scope
-- Approve phase advancement (at step 7 "Score & Gate")
-- Make decisions when agents disagree
-- Escalate blockers if needed
-- Track business metrics (did we deliver on time? on budget?)
-
-**My role (Claude PM):**
-- Manage daily execution (orchestrate agents)
-- Ensure quality (run reviewers)
-- Synthesize findings for you
-- Ask for your approval on phase-ending decisions
-- Log everything to PROGRESS.md for audit trail
-
----
-
-## Architecture Overview
-
-### Five Phases
-- **01-define** — Product definition, user journey, roles, glossary (prd, journey, ui-ux, roles)
-- **02-spec** — Technical architecture, stack, data model, API, standards (spec, data model, code standards)
-- **03-build** — Implementation, build order, code (implementation notes, application code)
-- **04-reconciliation** — Domain logic validation, receipt matching, finance model (reconciliation rules)
-- **05-test-ship** — Test plan, tracking, deployment, runbooks (test plan, tracking, deployment)
-
-Each phase has:
-- **CLAUDE.md** — Exit criteria, deliverables, reviewers for that phase
-- **Templates** — Starting points for deliverables (prd-template.md, etc.)
-- One **producer agent** — Writes deliverables for that phase
-
-### 22 Agents (Stateless Workers)
-
-**5 Producers** (one per phase): define-author, spec-author, build-author, reconciliation-author, ship-author
-
-**15 Reviewers** (run in parallel after each producer):
-- **Correctness:** terminology-reviewer, scope-reviewer, decisions-reviewer
-- **Design:** architecture-reviewer, data-model-reviewer, security-architect
-- **Quality:** test-strategy-reviewer, performance-reviewer, observability-architect
-- **Operations:** api-contract-reviewer, infrastructure-reviewer, monitoring-reviewer, tech-debt-reviewer
-- **Documentation:** docquality-reviewer
-- **Permanent (every phase):** security-reviewer ★
-
-**1 Executor:** git-author (commits/PRs after security approval)
-
-**1 Initializer:** project-init (populates a new project with structure and glossary)
-
-### Framework Evolution (Governance-Improvement Pipeline)
-5 parallel phases for improving the framework itself:
-- **01-framework-define** → framework-definer (analyze flaws, document philosophy)
-- **02-framework-spec** → framework-architect (design 7 improvements)
-- **03-framework-build** → framework-builder (implement, schemas, templates)
-- **04-framework-validation** → framework-validator (test on real projects)
-- **05-framework-ship** → framework-shipper (migration plan, adoption guide)
-
----
-
-## The 8-Step Orchestration Loop (My Job)
-
-Each work item follows: **Orient → Pick → Choose worker → Brief → Review → Revise → Score & gate → Close out**
-
-All state lives in files (work-list.json, PROGRESS.md, ADRs, GLOSSARY.md). I orchestrate: producer agent writes → 15 parallel reviewers validate → revision loop (up to 5 cycles) → owner approval gate.
-
-**Owner's role:** At step 7 (Score & Gate), I present findings and ask you to approve phase advancement. Your decision is based on business value, risk, and timeline — not technical details.
-
-See `.claude/docs/orchestration-protocol.md` for full details.
-
----
-
-## State Management (Files, Not Memory)
-
-All state lives in git:
-- **work-list.json** — Backlog (status, owner, verification)
-- **PROGRESS.md** — Audit log (append-only)
-- **GLOSSARY.md** — Domain terminology (agents add new terms first)
-- **decisions/adr-*.md** — Architectural decisions
-- **logs/<item-id>.md** — Session logs (local, gitignored)
-
----
-
-## My Daily Workflows
-
-**Start a new project:** I'll ask you for project name + domain → copy acc-governance → update GLOSSARY.md + work-list.json → run orchestration loop
-
-**Run the 8-step loop per work item:** I pick item → select agent → brief with exit criteria → run reviewers → collect findings → ask agent to revise → ask you to approve → move to next item
-
-**When you request to extend the framework:**
-- Add phase: I create `0X-name/CLAUDE.md` + producer agent + update orchestration-protocol.md (or you update, I review)
-- Add reviewer: I create agent + update `.claude/agents/README.md` + matrix
-- Change criteria: I update phase CLAUDE.md + create ADR documenting why
+| File | Purpose |
+|------|---------|
+| `project.json` | Project identity and framework link |
+| `project-context.md` | What exists — read by all agents before working |
+| `work-list.json` | Backlog (status, owner, verification) |
+| `PROGRESS.md` | Audit log (append-only) |
+| `GLOSSARY.md` | Domain terminology |
+| `decisions/adr-*.md` | Architectural decisions |
+| `framework.json` | Framework identity — framework repo only, never in projects |
 
 ---
 
@@ -128,28 +98,17 @@ All state lives in git:
 
 | Purpose | File |
 |---------|------|
-| **Formal roles** | `.claude/docs/ROLES.md` (PM, Owner, Agent definitions and authorities) |
-| **PM audit** | `.claude/docs/pm-responsibilities.md` (responsibilities audit + gaps + recommendations) |
-| **Core protocols** | `.claude/docs/orchestration-protocol.md`, `rules.md`, `guardrails.md` |
-| **Agents** | `.claude/agents/README.md` (registry + matrix) |
-| **Phase docs** | `01-define/CLAUDE.md`, `02-spec/CLAUDE.md`, etc. (exit criteria, reviewers) |
-| **Templates** | Each phase folder (prd, journey, spec, build-order, test-plan, etc.) |
-| **Framework evolution** | `.claude/docs/FRAMEWORK-EVOLUTION.md`, `governance-framework-improvement/` |
+| **Use mode** | `.claude/docs/use-mode.md` (project creation, linking, 8-step loop) |
+| **Maintain mode** | `.claude/docs/maintain-mode.md` (framework improvement, agent modification) |
+| **Framework overview** | `.claude/docs/framework-overview.md` (architecture, agents, phases) |
+| **Formal roles** | `.claude/docs/ROLES.md` |
+| **Core protocols** | `.claude/docs/orchestration-protocol.md`, `.claude/docs/rules.md`, `.claude/docs/guardrails.md` |
+| **Agents** | `.claude/agents/README.md` |
+| **Phase docs** | `01-define/CLAUDE.md` through `05-test-ship/CLAUDE.md` |
+| **project.json schema** | `.claude/docs/project-json-schema.md` |
+| **project-context template** | `01-define/project-context-template.md` |
 | **ADR template** | `decisions/adr-template.md` |
-
----
-
-## Development Guidelines
-
-**Modifying agents:** Preserve JSON output format → stay stateless (context from files) → update `.claude/agents/README.md` matrix → test with real work-list item
-
-**Modifying phases:** Edit phase CLAUDE.md (criteria, deliverables, reviewers) → update templates → document why in ADR → test
-
-**Adding docs:** Keep concise, link to related docs, include examples, sync with actual files (work-list.json, output-format.md, etc.)
-
-**Security:** Every commit requires security-reviewer to pass (hard gate). Use git-author agent only.
-
-**Decision tracking:** Record non-obvious choices as ADRs in `decisions/adr-template.md`
+| **Framework evolution** | `.claude/docs/FRAMEWORK-EVOLUTION.md`, `.claude/governance-improvement/` |
 
 ---
 
