@@ -136,16 +136,10 @@ acc-governance/
 - **Permanent (every phase):** security-reviewer ★
 
 ### Framework Producers (5) — Used in Maintain mode only
-- **framework-definer**
-- **framework-architect**
-- **framework-builder**
-- **framework-validator**
-- **framework-shipper**
+- **Improvement pipeline:** framework-definer, framework-architect, framework-builder, framework-validator, framework-shipper
 
 ### Framework Reviewers (3) — Used in Maintain mode only
-- **framework-consistency-reviewer**
-- **backward-compatibility-reviewer**
-- **adoption-readiness-reviewer**
+- **Governance:** framework-consistency-reviewer, backward-compatibility-reviewer, adoption-readiness-reviewer
 
 ### Executor & Initializer (2)
 - **git-author** — Handles commits/PRs (only after security approval)
