@@ -20,11 +20,34 @@ You stay in control. The PM never merges code, never spends your approval on som
 
 ---
 
+## What You Get
+
+| Feature | Description |
+|---------|-------------|
+| **5-phase workflow** | Define → Spec → Build → Reconciliation → Test & Ship — each phase has defined deliverables, exit criteria, and reviewers |
+| **Parallel review** | Up to 15 reviewer agents run simultaneously after each writer finishes — no waiting in line |
+| **Auto revision cycles** | Writers fix reviewer blockers automatically, up to 5 rounds, before escalating to you |
+| **Human approval gates** | PM stops and waits for your sign-off at every phase transition — nothing merges without you |
+| **Full audit trail** | Every agent run, finding, and your decision is logged to `PROGRESS.md` and committed to git |
+| **Resumable sessions** | Close the terminal, come back tomorrow — the PM reads state from files and picks up exactly where it left off |
+| **Decision records** | Every architectural choice is recorded in `decisions/adr-*.md` with the reasoning, so future-you knows why |
+| **Security on every phase** | `security-reviewer` runs automatically on every phase — can't be skipped |
+| **Self-improving** | "Maintain" mode lets you improve the framework itself using the same 5-phase pipeline |
+| **Multi-project** | One framework repo, many projects — each project links back via `project.json` |
+| **Branch protection** | `master` is protected; all changes go through PRs that only you can merge |
+
+---
+
 ## Prerequisites
 
 - **Claude Code** — [claude.ai/code](https://claude.ai/code)
 - **Git** — For version control
 - **Text editor** — For reading/editing project files
+
+**Which Claude model do you need?**
+**Claude Haiku is enough.** The framework is designed so Haiku handles all 30 agents efficiently — it's fast, cheap, and produces good output for structured tasks like reviewing and writing specs. You don't need Sonnet or Opus to use this. The main Claude Code session (your PM) also runs fine on Haiku.
+
+> If you want higher output quality on complex producer tasks (e.g., writing a detailed data model), switch the PM session to Sonnet. But start with Haiku — it's sufficient for most projects.
 
 ---
 
